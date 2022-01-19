@@ -5,7 +5,7 @@
 #  10 lines, file... 
 # -------------------------------------
 # @ edt ASIX M06 Curs 2019-2020
-# Gener 2020
+# Gener 2022
 # -------------------------------------
 import sys, argparse
 fileList=[]

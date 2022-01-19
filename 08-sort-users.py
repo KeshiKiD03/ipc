@@ -4,7 +4,7 @@
 # sort-users [-s login|gid]  file
 # -------------------------------------
 # @ edt ASIX M06 Curs 2019-2020
-# Gener 2020
+# Gener 2022
 # -------------------------------------
 import sys, argparse
 from functools import cmp_to_key

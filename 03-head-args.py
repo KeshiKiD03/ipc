@@ -35,5 +35,3 @@ for line in fileIn:
   if counter==MAXLIN: break
 fileIn.close()
 exit(0)
-
-
