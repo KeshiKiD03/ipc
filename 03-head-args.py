@@ -25,6 +25,7 @@ parser.add_argument("-f","--fit",type=str,\
         default="/dev/stdin",dest="fitxer")
 args=parser.parse_args()
 print(args)
+
 # -------------------------------------------------------
 MAXLIN=args.nlin
 fileIn=open(args.fitxer,"r")

@@ -13,7 +13,7 @@
 # $ head.py -f file.txt
 # tots els altres casos d'error
 # -------------------------------------
-import sys, argparse
+import sys, argparse # Importa LIBRERIA SYS + ARGPARSE
 parser = argparse.ArgumentParser(description=\
         """Mostrar les N primereslínies """,\
         epilog="thats all folks")
@@ -40,27 +40,30 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+**03-head-args.py [-n nlin] [-f filein]**
+
+  Mostar les n primeres línies (o 10)  de filein (o stdin).
+
+  Definir els dos paràmetres opcionals i les variables on
+  desar-los. Usar un str default de “/dev/stdin” com a nom 
+  de fitxer per defecte, simplifica el codi, tenim sempre
+  un string.
 
 # ----------------------------------------------
 
-## Explicación
+## USAGE
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
-
-es mostren les deu primeres línies de  l'entrada estàndard. 
-
-Sinpsys: $ head [file] 
-
+# $ head.py -n 2 -f file.txt
+# $ head.py < file.txt
+# $ head.py -n 3
+# $ head.py -f file.txt
+# tots els altres casos d'error
 
 # ----------------------------------------------
 
 ## Metodología
 
-1. 
+1. # Si no le pasamos n lineas, procesa 10, si le pasamos datos procesa entrada estandar.
 
 2.
 
