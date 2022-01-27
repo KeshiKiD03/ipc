@@ -9,21 +9,20 @@
 import sys,socket
 from subprocess import Popen, PIPE
 # ------------------------------------
-HOST = ''
+HOST = 'localhost'
 PORT = 50001
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((HOST,PORT))
-s.listen(1)
-conn, addr = s.accept()
-print("Connected by", addr)
-command = ["date"]
-pipeData = Popen(command,stdout=PIPE)
+s.listen(1) # Escolta
+conn, addr = s.accept() # Accepta la connexió
+print("Connected by", addr) # Rep la connexió
+command = ["date"]  # Li especifiquem el command que utiltizarem
+pipeData = Popen(command,stdout=PIPE)   # Executem el popen
 
-for line in pipeData.stdout:
-  conn.send(line)
-conn.close()
+for line in pipeData.stdout:    # Retornem les línees
+  conn.send(line)   # Enviem la líena
+conn.close()    # Tanquem la connexió
 
 sys.exit(0)
-

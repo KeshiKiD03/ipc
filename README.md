@@ -4,7 +4,8 @@
 
  - IPC
 
-## @ edt ASIX M06 2019-2020
+# IPC - Aaron Andal M06 - ASO
+## Curs 2021-2022
 
 Podeu trobar els programes al GitLab de [edtasixm06](https://gitlab.com/edtasixm06/ipc-2019-20.git
 )
@@ -15,6 +16,10 @@ ASIX M06-ASO Escola del treball de barcelona
 
 
 #### Repàs Python / Argsparse / Objectes
+
+ * [Python documentation](https://docs.python.org/3/library/argparse.html)
+ * [Argparse tutorial](https://docs.python.org/3/howto/argparse.html)
+
 
 **01-head.py [file]**
   

@@ -9,7 +9,7 @@
 # -------------------------------------
 import sys,socket
 # -------------------------------------
-HOST = ''
+HOST = 'localhost'
 PORT = 50001
 #PORT = 13
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

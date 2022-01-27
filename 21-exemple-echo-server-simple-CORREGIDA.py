@@ -16,7 +16,7 @@
 # -------------------------------------
 import sys,socket
 #-------------------------------------
-HOST = ''
+HOST = 'localhost'
 PORT = 50001
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   # Constructor...
@@ -45,3 +45,98 @@ sys.exit(0) # Finalitzem programa
 
 # telnet i nc (netcat) són ordres clients de qualsevol transmissió (TCP, UDP)
 # nc -lk --> 'l' --> listen | 'k' --> Quan acaba una connexió, passa a la següent
+
+
+
+"""
+
+## NOMBRE DEL PROGRAMA + SINTAXIS
+
+-----------------------------------------------------------------------------
+Sockets:
+  * *Simple*: Exemples simples de construir un client/servidor. 
+
+    - Simple indica que el servidor engega, escolta fins que rep una
+    connexió, la atén i finalitza. Francament un servidor que processa un sol
+    client en la seva vida útil és massa simple!.
+
+    - Simple també indica que el contingut que es transmet del client al servidor i de retorn 
+    al client és hardcoded i de mida limitada.
+
+
+      * 21-exemple-echo-client-simple.py / 21-exemple-echo-server-simple.py
+
+
+ * *Buffer*: El client (o el servidor) no té preestablert quanta informació es rebrà, per tant
+   no n'hi ha prou de fer un sol reciv (escola un sol cop) sinó que cal fer un bucle per anar
+   rebent informació mentre n'hi hagi. usualment és una estructura *"while not data"*.
+
+# ----------------------------------------------
+
+## Metodología
+
+1. Encender primero el SERVIDOR.
+
+2. El servidor hace un bucle que escucha. 
+
+3.  if not data:  # if not data = s'ha tancat la connexió, el servidor finalitzarà (SERVIDOR!)
+
+4. NC
+
+Amb la utilitat nc 
+(netcat) podem observar també una comunicació client servidor simple 
+ 
+En el server: 
+$ nc ­l 55500 
+ 
+En el client: 
+$ cat /etc/passwd | nc localhost 555000 
+En el server: 
+$ nc ­l 55500 
+ 
+En el client: 
+$ nc localhost 555000 
+hola 
+bye 
+^d
+
+5.
+
+6.
+
+7.
+
+8.
+
+9.
+
+10.
+
+11.
+
+12.
+
+13.
+
+14.
+
+15.
+
+16.
+
+17.
+
+18.
+
+19.
+
+20.
+
+
+
+
+
+
+
+"""
+
