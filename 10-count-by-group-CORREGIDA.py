@@ -95,20 +95,27 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+**10-count-by-group.py [-s gid | gname | nusers ] -u usuaris -g grups**
+
+  LListar els grups del sistema ordenats pel criteri de gname, gid o de 
+  número d'usuaris.
+  *Atenció* cal gestionar apropiadament la duplicitat dels usuaris en un grup.
+  Requeriment: desar a la llista d'usuaris del grup tots aquells usuaris
+  que hi pertanyin, sense duplicitats, tant com a grup principal com a 
+  grup secundari.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
+**10-count-by-group.py [-s gid | gname | nusers ] -u usuaris -g grups**
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
-
-Sinpsys: $ head [file] 
+  LListar els grups del sistema ordenats pel criteri de gname, gid o de 
+  número d'usuaris.
+  *Atenció* cal gestionar apropiadament la duplicitat dels usuaris en un grup.
+  Requeriment: desar a la llista d'usuaris del grup tots aquells usuaris
+  que hi pertanyin, sense duplicitats, tant com a grup principal com a 
+  grup secundari.
 
 
 # ----------------------------------------------

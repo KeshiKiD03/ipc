@@ -5,7 +5,7 @@
 #  10 lines, file
 # -------------------------------------
 # @ edt ASIX M06 Curs 2019-2020
-# Gener 2020
+# Gener 2022
 # -------------------------------------
 import sys, argparse
 parser = argparse.ArgumentParser(description=\
@@ -35,20 +35,21 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+
+**04-head-choices.py [-n 5|10|15]   -f filein**
+
+  Mostar les n primeres 5 o 10 o 15 (def 10)  de filein.
+  Usar choices de argparse per definir un conjunt de valors vàlids.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
+**04-head-choices.py [-n 5|10|15]   -f filein**
 
-Sinpsys: $ head [file] 
+  Mostar les n primeres 5 o 10 o 15 (def 10)  de filein.
+  Usar choices de argparse per definir un conjunt de valors vàlids.
 
 
 # ----------------------------------------------

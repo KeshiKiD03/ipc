@@ -1,13 +1,13 @@
 # /usr/bin/python
 #-*- coding: utf-8-*-
 #
-# sort-users [-s login|gid]  file
+# list-users [-f file]
+# 10 lines, file o stdin
 # -------------------------------------
-# @ edt ASIX M06 Curs 2019-2020
+# @ edt ASIX M06 Curs 2021-2022
 # Gener 2022
 # -------------------------------------
 import sys, argparse
-from functools import cmp_to_key
 parser = argparse.ArgumentParser(description=\
         """Llistar els usuaris de file o stdin (format /etc/passwd""",\
         epilog="thats all folks")
@@ -37,14 +37,10 @@ class UnixUser():
   def __str__(self):
     "functió to_string"
     return "%s %s %d %d %s %s %s" %(self.login, self.passwd, self.uid, self.gid, self.gecos, self.home, self.shell)
-# -------------------------------------------------------
+# ------------------------------------------------------
 def sort_login(user):
-  '''Comparador d'usuaris segons el login'''
+  '''comparador d'usuaris pert login'''
   return user.login
-  
-def sort_gid(user):
-  '''Comparador d'usuaris segons el gid'''
-  return (user.gid, user.login)
 # -------------------------------------------------------
 fileIn=open(args.fitxer,"r")
 userList=[]
@@ -52,86 +48,11 @@ for line in fileIn:
   oneUser=UnixUser(line)
   userList.append(oneUser)
 fileIn.close()
-if args.criteria=="login":
-  userList.sort(key=sort_login)
-else:
-  userList.sort(key=sort_gid)
+# ----------------------------
+userList.sort(key=sort_login)
+
+# ----------------------------
 for user in userList:
  print(user)
 exit(0)
-
-"""
-
-## NOMBRE DEL PROGRAMA + SINTAXIS
-
-**08-sort-users.py [-s login|gid] file**
-
-  Carregar en una llista a memòria els usuaris provinents d'un fitxer
-  tipus /etc/passwd, usant objectes *UnixUser*, i llistar-los.
-  Ordenar el llistat (stdout) segons el criteri login o el criteri 
-  gid (estable).
-
-# ----------------------------------------------
-
-## Explicación
-
-**08-sort-users.py [-s login|gid] file**
-
-  Carregar en una llista a memòria els usuaris provinents d'un fitxer
-  tipus /etc/passwd, usant objectes *UnixUser*, i llistar-los.
-  Ordenar el llistat (stdout) segons el criteri login o el criteri 
-  gid (estable).
-
-
-# ----------------------------------------------
-
-## Metodología
-
-1. 
-
-2.
-
-3.
-
-4.
-
-5.
-
-6.
-
-7.
-
-8.
-
-9.
-
-10.
-
-11.
-
-12.
-
-13.
-
-14.
-
-15.
-
-16.
-
-17.
-
-18.
-
-19.
-
-20.
-
-
-
-
-
-
-
-"""
 

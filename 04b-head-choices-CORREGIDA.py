@@ -36,20 +36,19 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+**04b-head-choices.py [-n 5|10|15]   -f filein**
+
+  Mostar les n primeres 5 o 10 o 15 (def 10)  de filein.
+  Usar choices de argparse per definir un conjunt de valors vàlids.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
+**04b-head-choices.py [-n 5|10|15]   -f filein**
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
-
-Sinpsys: $ head [file] 
+  Mostar les n primeres 5 o 10 o 15 (def 10)  de filein.
+  Usar choices de argparse per definir un conjunt de valors vàlids.
 
 
 # ----------------------------------------------

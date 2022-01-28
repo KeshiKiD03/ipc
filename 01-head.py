@@ -1,6 +1,8 @@
 # /usr/bin/python
 #-*- coding: utf-8-*-
 #
+# PROGRAMA QUE LE 10 LINEAS
+# 
 # head [file]
 #  10 lines, file o stdin
 # -------------------------------------

@@ -42,8 +42,6 @@ pid=os.fork()
 if pid != 0:    # Fem l'if en funció el PID al pare.
   print("Engegat el server CAL:", pid)
   sys.exit(0)   # PREGUNTAR CANET
-  
-# 
 
 signal.signal(signal.SIGUSR1,mysigusr1)
 signal.signal(signal.SIGUSR2,mysigusr2)
@@ -53,90 +51,12 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((HOST,PORT))
 s.listen(1)
 
-# Cargar las 3 señales, definir el SOCKET
-
-while True: # Bucle infinit # Para que esté escuchando, para que esté atendiendo una conexión detrás de otro
+while True: # Bucle infinit
   conn, addr = s.accept()
   print("Connected by", addr)
-  llistaPeers.append(addr) # Lo registra en la lsita de conexiones
+  llistaPeers.append(addr)
   command = "cal %d" % (ANY)
   pipeData = Popen(command,shell=True,stdout=PIPE)
   for line in pipeData.stdout:
     conn.send(line)
   conn.close()
-  
-# Shell True, si no se pone no funciona.
-
-# %d es para pasar una VARIABLE.
-  
-  """
-
-## NOMBRE DEL PROGRAMA + SINTAXIS
-
-24 SERVIDOR
-  
-  Mostrar les deu primeres línies de file o stdin
-
-# ----------------------------------------------
-
-## Explicación
-
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
-
-es mostren les deu primeres línies de  l'entrada estàndard. 
-
-Sinpsys: $ head [file] 
-
-
-# ----------------------------------------------
-
-## Metodología
-
-1. 
-
-2.
-
-3.
-
-4.
-
-5.
-
-6.
-
-7.
-
-8.
-
-9.
-
-10.
-
-11.
-
-12.
-
-13.
-
-14.
-
-15.
-
-16.
-
-17.
-
-18.
-
-19.
-
-20.
-
-
-
-
-
-
-
-"""

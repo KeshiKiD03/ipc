@@ -50,21 +50,29 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+**07-list-users.py   [-f file]**
+
+  Donat un file tipus /etc/passwd o stdin (amb aquest format) fer:
+  * el constructor d'objectes *UnixUser* rep un strg amb la línia sencera 
+    tipus /etc/passwd.
+  * llegir línia a línia cada usuari assignant-lo a un objecte 
+    UnixUser i afegir l’usuari a una llista d’usuaris UnixUser.
+  * un cop completada la carrega de dades i amb la llista amb 
+    tots els usuaris, llistar per pantalla els usuaris recorrent la llista.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
+**07-list-users.py   [-f file]**
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
-
-Sinpsys: $ head [file] 
-
+  Donat un file tipus /etc/passwd o stdin (amb aquest format) fer:
+  * el constructor d'objectes *UnixUser* rep un strg amb la línia sencera 
+    tipus /etc/passwd.
+  * llegir línia a línia cada usuari assignant-lo a un objecte 
+    UnixUser i afegir l’usuari a una llista d’usuaris UnixUser.
+  * un cop completada la carrega de dades i amb la llista amb 
+    tots els usuaris, llistar per pantalla els usuaris recorrent la llista.
 
 # ----------------------------------------------
 

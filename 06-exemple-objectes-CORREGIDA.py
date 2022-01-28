@@ -40,20 +40,25 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+
+**06-exemple-objectes.py**
+
+  Exemple de creació de una classe simplificada UnixUser amb camps login, uid, gid. 
+  Constructor donats els tres valors, mètode show() i mètode sumaun()  que fa la tonteria
+  de sumar 1 al uid.
+  Crea objectes user1 i user2 de tipus UnixUser, els mostra, els posa a una llista.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
+**06-exemple-objectes.py**
 
-Sinpsys: $ head [file] 
+  Exemple de creació de una classe simplificada UnixUser amb camps login, uid, gid. 
+  Constructor donats els tres valors, mètode show() i mètode sumaun()  que fa la tonteria
+  de sumar 1 al uid.
+  Crea objectes user1 i user2 de tipus UnixUser, els mostra, els posa a una llista.
 
 
 # ----------------------------------------------

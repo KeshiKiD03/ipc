@@ -2,6 +2,7 @@
 #-*- coding: utf-8-*-
 class UnixUser():
   """Classe UnixUser: prototipus de /etc/passwd login:passwd:uid:gid:gecos:home:shell"""
+
   def __init__(self, userLine):	
     "Constructor objectes UnixUser"
     userField=userLine.split(":")
@@ -15,13 +16,14 @@ class UnixUser():
 
   def show(self):
     "Mostra usuari"
-    print("login: {self.login} uid: {self.uid} gid: {self.gid} gecos: {self.gecos} home: {self.home} shell: {self.shell}")
+    print(f"login: {self.login} uid: {self.uid} gid: {self.gid} gecos: {self.gecos} home: {self.home} shell: {self.shell}")
 
   def __str__(self):
     "Fa string de la instancia"
     return "%s %s %d %d %s %s %s" %(self.login, self.passwd, self.uid, self.gid, self.gecos, self.home, self.shell)
 
 print("Programa")
+
 user1=UnixUser("Pere:pere12:1000:100:pere:/home/pere:/bin/bash")
 user1.show()
 print(user1)
@@ -35,20 +37,25 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+
+**06b-exemple-objectes.py**
+
+  Exemple de creació de una classe simplificada UnixUser amb camps login, uid, gid. 
+  Constructor donats els tres valors, mètode show() i mètode sumaun()  que fa la tonteria
+  de sumar 1 al uid.
+  Crea objectes user1 i user2 de tipus UnixUser, els mostra, els posa a una llista.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
+**06b-exemple-objectes.py**
 
-Sinpsys: $ head [file] 
+  Exemple de creació de una classe simplificada UnixUser amb camps login, uid, gid. 
+  Constructor donats els tres valors, mètode show() i mètode sumaun()  que fa la tonteria
+  de sumar 1 al uid.
+  Crea objectes user1 i user2 de tipus UnixUser, els mostra, els posa a una llista.
 
 
 # ----------------------------------------------

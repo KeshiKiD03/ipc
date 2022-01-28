@@ -61,15 +61,15 @@ exit(0)
 
 # ----------------------------------------------
 
-## Metodología
+## Metodología y APUNTES
 
 1. # Si no le pasamos n lineas, procesa 10, si le pasamos datos procesa entrada estandar.
 
-2.
+2. args=parser.parse_args() --> Es cuando se procesan los argumentos
 
-3.
+3. # MAXLIN=args.nlin --> Lo que me hayan pasado o por default 10
 
-4.
+4. # fileIN --> Se abre lo que le hayan pasado o se abre /dev/stdin.
 
 5.
 

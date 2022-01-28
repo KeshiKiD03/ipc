@@ -98,20 +98,29 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+**09-gname-users.py   [-s login|gid|gname]  -u fileusers -g fileGroup**
+
+  Carregar en una llista a memòria els usuaris provinents d'un fitxer tipus
+  /etc/passwd, usant objectes UnixUser, i llistar-los. Ordenar el llistat
+  (stdout) segons el criteri login o el criteri gid o el gname.
+ 
+   Requeriments: primer carregar a un diccionari totes les dades de tots
+   els grups. Després carregar a una llista totes les dades dels usuaris.
+   Finalment ordenar i llistar.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
+**09-gname-users.py   [-s login|gid|gname]  -u fileusers -g fileGroup**
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
-
-Sinpsys: $ head [file] 
+  Carregar en una llista a memòria els usuaris provinents d'un fitxer tipus
+  /etc/passwd, usant objectes UnixUser, i llistar-los. Ordenar el llistat
+  (stdout) segons el criteri login o el criteri gid o el gname.
+ 
+   Requeriments: primer carregar a un diccionari totes les dades de tots
+   els grups. Després carregar a una llista totes les dades dels usuaris.
+   Finalment ordenar i llistar.
 
 
 # ----------------------------------------------

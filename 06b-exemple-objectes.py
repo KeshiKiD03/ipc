@@ -2,6 +2,7 @@
 #-*- coding: utf-8-*-
 class UnixUser():
   """Classe UnixUser: prototipus de /etc/passwd login:passwd:uid:gid:gecos:home:shell"""
+
   def __init__(self, userLine):	
     "Constructor objectes UnixUser"
     userField=userLine.split(":")
@@ -15,7 +16,7 @@ class UnixUser():
 
   def show(self):
     "Mostra usuari"
-    print("login: {self.login} uid: {self.uid} gid: {self.gid} gecos: {self.gecos} home: {self.home} shell: {self.shell}")
+    print(f"login: {self.login} uid: {self.uid} gid: {self.gid} gecos: {self.gecos} home: {self.home} shell: {self.shell}")
 
   def __str__(self):
     "Fa string de la instancia"
