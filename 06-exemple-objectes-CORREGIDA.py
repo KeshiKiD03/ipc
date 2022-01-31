@@ -16,6 +16,7 @@ class UnixUser(): # Usamos CLASES para definir nuevos TIPOS. Se usa para referir
   # INIT significa inicializar. Es la función o el método que es llamado cuando creamos nuevos POINT - OBJECT.
   # Self es el current object.
   # El resto son variables.
+  # Es decir creará una caja en blanco y dentro almacenará 3 propiedades.
     "Constructor objectes UnixUser"
     self.login=l # Definimos variable LOGIN.
     self.uid=i # Definimos variable UID.
