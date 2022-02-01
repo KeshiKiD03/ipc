@@ -1,6 +1,6 @@
 # /usr/bin/python
 #-*- coding: utf-8-*-
-# cal-server-one2one-pissara.py  
+# telnet-server-multi.py
 # -------------------------------------
 # @ edt ASIX M06 Curs 2021-2022
 # Gener 2022
@@ -72,4 +72,7 @@ while True: # Bucle infinit # Bucle infinit (atendre connexions un darrera l'alt
   fileLog.close() # Cierra
   
   # Acepta un CLIENTE
+  
+  
+  # EDITAR EL SERVIDOR Y VERIFICAR
   

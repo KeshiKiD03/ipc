@@ -5,7 +5,7 @@
 # @ edt ASIX M06 Curs 2021-2022
 # Gener 2022
 # -------------------------------------
-import sys,socket,os,signal,argparse
+import sys,socket,os,signal,argparse,time
 from subprocess import Popen, PIPE
 # -------------------------------------
 parser = argparse.ArgumentParser(description=\
@@ -54,12 +54,123 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((HOST,PORT))
 s.listen(1)
 
+# Lo de arriba es una plantilla
+
+# Aquí es donde se hace TODO
+
 while True: # Bucle infinit # Bucle infinit (atendre connexions un darrera l'altre)
   conn, addr = s.accept() # Guardem les variables conn i addr
   print("Connected by", addr) #  Printem
-  llistaPeers.append(addr)
-  command = "cal %d" % (ANY)
-  pipeData = Popen(command,shell=True,stdout=PIPE)
-  for line in pipeData.stdout:
-    conn.send(line)
-  conn.close()
+  llistaPeers.append(addr) # Lo añade a una LISTA
+  fileName="/tmp/%s-%s-%s.log" % (addr[0],addr[1],time.strftime("%Y%m%d-%H%M%S"))
+  fileLog=open(fileName,"w")
+  while True:
+  	data = conn.recv(1024)
+  	if not data: break # Cuando el otro me ha penjado el teléfono cierra
+  	fileLog.write(str(data))
+  conn.close() # Cierra la conexión # Liberar el SOCKET.
+  fileLog.close() # Cierra
+  
+  # Acepta un CLIENTE
+  
+  
+"""
+
+### CORREGIDA
+
+PROGRAMA TIENE LA SEÑAL 1
+
+VA ACUMULANDO LAS SEÑALES
+
+SERVIDOR ONE 2 ONE --> ACEPTA UNA CONEXIÓN AL MISMO TIEMPO.
+
+
+Todo el programa va en el WHILE TRUE (Está todo ahí)
+
+El resto es una PLANTILLA. [IMPORTANTE]
+
+
+
+
+
+
+
+Se conectan al puerto 50001 y se guarda en un FICHERO.
+
+El servidor hace un WHILE TRUE (Cada iteración atiende un cliente, a la propera atiende a otro)
+
+
+
+
+## CORREGIR PROGRAMA SERVIDOR
+
+## EXPLICACIÓN
+
+WHILE TRUE:
+-----
+	aceptar la conexión
+
+	nom = generar_nom
+
+	open del fitxer
+	
+	bucle
+	
+		read del socket
+		
+		write fitxer
+
+	cerrar el fitxer
+
+	socket.close() --> Cerrar el socket
+
+----
+
+
+
+
+
+
+1. Necesitamos el NETCAT
+
+	nc -l 50001
+
+2. Se conecta, vomita y cierra. --> python3 25-ps-client... localhost
+
+3. En el SERVIDOR se verifica
+
+
+isx36579183@i11:~/Documents/ipc$ nc -l 50001
+    PID TTY      STAT   TIME COMMAND
+      1 ?        Ss     0:02 /sbin/init
+      2 ?        S      0:00 [kthreadd]
+      3 ?        I<     0:00 [rcu_gp]
+      4 ?        I<     0:00 [rcu_par_gp]
+      6 ?        I<     0:00 [kworker/0:0H-events_highpri]
+      8 ?        I      0:00 [kworker/u16:0-flush-259:0]
+      9 ?        I<     0:00 [mm_percpu_wq]
+     10 ?        S      0:00 [rcu_tasks_rude_]
+     11 ?        S      0:00 [rcu_tasks_trace]
+     12 ?        S      0:00 [ksoftirqd/0]
+     13 ?        I      0:00 [rcu_sched]
+     14 ?        S      0:00 [migration/0]
+     15 ?        S      0:00 [cpuhp/0]
+     16 ?        S      0:00 [cpuhp/1]
+     17 ?        S      0:00 [migration/1]
+     18 ?        S      0:00 [ksoftirqd/1]
+     20 ?        I<     0:00 [kworker/1:0H-events_highpri]
+     21 ?        S      0:00 [cpuhp/2]
+     22 ?        S      0:00 [migration/2]
+     23 ?        S      0:00 [ksoftirqd/2]
+     25 ?        I<     0:00 [kworker/2:0H-kblockd]
+     26 ?        S      0:00 [cpuhp/3]
+     27 ?        S      0:00 [migration/3]
+
+.......
+
+
+
+
+
+
+"""
