@@ -1,33 +1,45 @@
-# /usr/bin/python3
+# /usr/bin/python
 #-*- coding: utf-8-*-
-# cal-client-one2oned-pissarra.py  
+#
+# daytime-server-one2one.py  
 # -------------------------------------
-# @ edt ASIX M06 Curs 2019-2020
-# Gener 2020
+# @ edt ASIX M06 Curs 2021-2022
+# Gener 2022
 # -------------------------------------
-import sys,socket,argparse
-parser = argparse.ArgumentParser(description="""CAL server""")
-parser.add_argument("-s","--server",type=str, default='')
-parser.add_argument("-p","--port",type=int, default=50001)
+import sys,socket,argparse,os,signal
+from subprocess import Popen, PIPE
+# -------------------------------------
+parser = argparse.ArgumentParser(description=\
+        """Server One by One""")
+
+parser.add_argument("-p","--port", type=int, help="port al qual ens connectem",\
+     default=50001, dest="port")
+
 args=parser.parse_args()
-HOST = args.server
+# -------------------------------------
+HOST = ''
 PORT = args.port
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind((HOST,PORT))
+s.listen(1)
+
 while True:
-  data = s.recv(1024)
-  if not data: break
-  print('Data:', str(data))
-s.close()
-sys.exit(0)
-
-
-
+  conn, addr = s.accept()
+  print("Connected by", addr)
+  command = ["date"]
+  pipeData = Popen(command,stdout=PIPE)
+  for line in pipeData.stdout:
+    conn.send(line)
+  conn.close()
+  
+  
+  
+  
 """
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
-
-24 CLIENTE
 
  * 22-daytime-client.py / 22-daytime-server.py 
 
@@ -83,5 +95,3 @@ sys.exit(0)
 19.
 
 20.
-
-"""

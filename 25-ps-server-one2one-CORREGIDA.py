@@ -43,6 +43,9 @@ if pid != 0:    # Fem l'if en funció el PID al pare.
   print("Engegat el server CAL:", pid)
   sys.exit(0)   # PREGUNTAR CANET
 
+
+# NOMÉS S'EXECUTARÀN AL PROGRAMA FILL JA QUE EL PROGRAMA PARE JA ES MORT!!!
+
 signal.signal(signal.SIGUSR1,mysigusr1)
 signal.signal(signal.SIGUSR2,mysigusr2)
 signal.signal(signal.SIGTERM,mysigterm)
@@ -51,9 +54,9 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((HOST,PORT))
 s.listen(1)
 
-while True: # Bucle infinit
-  conn, addr = s.accept()
-  print("Connected by", addr)
+while True: # Bucle infinit # Bucle infinit (atendre connexions un darrera l'altre)
+  conn, addr = s.accept() # Guardem les variables conn i addr
+  print("Connected by", addr) #  Printem
   llistaPeers.append(addr)
   command = "cal %d" % (ANY)
   pipeData = Popen(command,shell=True,stdout=PIPE)

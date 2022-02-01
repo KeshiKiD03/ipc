@@ -69,7 +69,8 @@ while True: # Bucle infinit # Para que esté escuchando, para que esté atendien
 
 # %d es para pasar una VARIABLE.
   
-  """
+
+"""
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 

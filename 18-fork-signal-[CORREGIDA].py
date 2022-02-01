@@ -78,7 +78,54 @@ Senyals: (Per mirar aquests: kill -l)
 
 # ----------------------------------------------
 
-## Metodología
+## Metodología Y APUNTES
+
+###############################################################
+
+isx36579183@i11:~/Documents/ipc$ python3 18-fork-signal.py 
+Hola, començament del programa principal
+PID pare:  9386
+Programa Pare 9386 9387
+Hasta lugo lucas!
+Programa fill 9387 0
+
+
+## Está haciendo un bucle infinito, está vivo aún el daemon.
+
+## El programa se ha encendido. Se ha reproducido y se ha muerto. Y ha quedado el proceso hijo ejecutandose en backgroup en un DAEMON. En bucle infinito.
+
+## ¿Cómo gestionarlo?
+
+## Recargarse, pararse.
+
+## kill - $(pgrep python)
+
+## /var/run/pid (nombre de fichero y pid) --> Sino no sabe como pararlo, aturarlo, etc.
+
+## Bifurca y genera un demonio, y se queda en el infinito
+
+
+
+
+DEBERES
+
+## El programa 18, pero que este programa sea controlable por 2 SEÑALES. 
+
+	USR 1 / USR 2 que continue o USR 2 que termine. Enviar 2 señales. Señal 1 continue y señal 2 termina. 
+
+## /var/run/pid es donde están todos.
+
+
+## Matarlo normal
+
+## kill 9708
+
+## pgrep python
+
+
+###############################################################
+
+25.01.22 - 18 + 19
 
 1. 
 
