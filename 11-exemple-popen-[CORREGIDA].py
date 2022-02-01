@@ -6,8 +6,8 @@
 # @ edt ASIX M06 Curs 2021-2022
 # Gener 2022
 # -------------------------------------
-import sys, argparse
-from subprocess import Popen, PIPE
+import sys, argparse # Importa librerías
+from subprocess import Popen, PIPE # Filtra que de la librería de "subprocess", me importa el Popen y el PIPE
 
 parser = argparse.ArgumentParser(description=\
         """Exemple popen""")
@@ -31,20 +31,26 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+#### IPC: Pipes / Subprocess / Popen
+
+**11-exemple-popen.py dir**
+
+  Crear un programa que executa un ls de un argument rebut i 
+  mostra per stdout el que rep del popen. Utilitza subprocess.Popen.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
+#### IPC: Pipes / Subprocess / Popen
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
+**11-exemple-popen.py dir**
 
-Sinpsys: $ head [file] 
+  Crear un programa que executa un ls de un argument rebut i 
+  mostra per stdout el que rep del popen. Utilitza subprocess.Popen.
+  
+  
+############## TEORIA POPEN #############################
 
 
 # ----------------------------------------------

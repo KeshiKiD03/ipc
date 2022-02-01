@@ -56,12 +56,12 @@ class UnixGroup():
     "functió to_string d'un objecte UnixGroup"
     return "%s %d %s" % (self.gname, int(self.gid), self.userList)
 # -------------------------------------------------------
-groupDict={}
-groupFile=open(args.groupFile,"r")
-for line in groupFile:
-  group=UnixGroup(line)
-  groupDict[group.gid]=group
-groupFile.close()
+groupDict={} # Define Diccionario Vacío
+groupFile=open(args.groupFile,"r") # Abre el Fichero groupFile en modo Lectura
+for line in groupFile: # Se recorre el groupFile
+  group=UnixGroup(line) # Se asigna cada línea de la clase UnixGroup a la variable group.
+  groupDict[group.gid]=group # ?
+groupFile.close() # Se cierra el Fichero
 # ---------------------------------
 userFile=open(args.userFile,"r")
 userList=[]
@@ -74,10 +74,10 @@ for line in userFile:
 userFile.close()
 # ---------------------------------
 index=[]
-if args.criteria=="gname":
-  index = [ (groupDict[k].gname,k) for k in groupDict ]
-elif args.criteria=="nusers":
-  index = [ (len(groupDict[k].userList),k) for k in groupDict ]
+if args.criteria=="gname": # Ordenar por el número de Grupos.
+  index = [ (groupDict[k].gname,k) for k in groupDict ] # 1. Generar un índice con TUPLAS con GNAME y GID. 2. Se fabrica un LIST COMPREHENSIONS. groupDict[k] --> Clave, k = gid ||| groupDict[k].gname --> Es un objeto
+elif args.criteria=="nusers": # Ordenar por el número de Usuarios. # 1. Obtener la cantidad de usuarios que pertenecen a un grupo. # 2. Se obtiene con n len(groupDict[k].userList) # 3. Hemos fabricado un índice de un valor calculable.
+  index = [ (len(groupDict[k].userList),k) for k in groupDict ] # 
 else:
   index = [ k for k in groupDict ]
 index.sort()
@@ -103,6 +103,7 @@ exit(0)
   Requeriment: desar a la llista d'usuaris del grup tots aquells usuaris
   que hi pertanyin, sense duplicitats, tant com a grup principal com a 
   grup secundari.
+  
 
 # ----------------------------------------------
 
@@ -120,9 +121,29 @@ exit(0)
 
 # ----------------------------------------------
 
+## Diferencia
+
+* Dado este usuario
+
+	Tiene un GID
+	
+		Existe el grupo por el cual pertenece este usuario?
+		
+		Si no existe no hará nada
+		
+		Si existe
+		
+			Lo añade en la lista.
+			
+			
+
+# -------------------------------------------------
+
 ## Metodología
 
-1. # Definir un diccionario y hacer un OPEN.
+
+
+1. # Definir un diccionario de GRUPOS (Carga Grupos) Y USUARIOS (Carga Usuarios) y hacer un OPEN.
 
 2. Abrir python3
 
@@ -237,7 +258,7 @@ index
 
 
 
-for g,k in index:
+for gname,k in index:
 	print(groupDict[k])
 
 
@@ -253,12 +274,12 @@ for g,k in index:
 
 # Fabricar un índice de un valor calculable
 
-index=[ (len(groupDict[k].userList), k) for k in groupDict]
+index=[ (len(groupDict[k].userList), k) for k in groupDict] --> Es un list comprehension. 
 
-index.sort()
+index.sort() --> Ordenarlo
 
-for g,k in index:
-	print(groupDict[k])
+for gname,k in index:
+	print(groupDict[k]) --> Todas las entradas según el orden de nombres.
 	
 
 
@@ -278,37 +299,6 @@ for g,k in index:
 
 
 
-5.
-
-6.
-
-7.
-
-8.
-
-9.
-
-10.
-
-11.
-
-12.
-
-13.
-
-14.
-
-15.
-
-16.
-
-17.
-
-18.
-
-19.
-
-20.
 
 
 
@@ -316,5 +306,6 @@ for g,k in index:
 
 
 
-"""
+########################### -------------------------
+
 
