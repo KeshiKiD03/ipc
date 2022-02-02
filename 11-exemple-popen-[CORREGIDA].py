@@ -50,8 +50,23 @@ exit(0)
   mostra per stdout el que rep del popen. Utilitza subprocess.Popen.
   
   
-############## TEORIA POPEN #############################
+############## TEORIA POPEN CONSTRUCTOR #############################
 
+* Abre una "tubería" o "pipe" del comando "cmd".
+
+* Retorna un valor que es un "open file object" conectado al tubo. 
+
+	* Puede ser en modo
+	
+		* Read 'r'
+		
+		* Write 'w'
+
+* El "buffering" argument tiene la misma explicación quue la función "open()".
+
+	* Retorna "file object" --> Modo write o read STRINGS QUE BYTES.
+	
+* El método "close()" retorna None, si el subproceso sale "success".
 
 # ----------------------------------------------
 
