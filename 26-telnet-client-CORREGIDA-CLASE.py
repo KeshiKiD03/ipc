@@ -1,6 +1,6 @@
 # /usr/bin/python3
 #-*- coding: utf-8-*-
-# cal-client-one2oned-pissarra.py  
+# telnet-client.py # ONE 2 ONE
 # -------------------------------------
 # @ edt ASIX M06 Curs 2021-2022
 # Gener 2022
@@ -16,28 +16,32 @@ args=parser.parse_args()
 # ---------------------------------------
 HOST = args.server
 PORT = args.port
+FI = bytes(chr(4), 'utf-8')
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Abre el SOCKET TCP
-s.connect((HOST, PORT)) # Se conecta
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+s.connect((HOST, PORT)) # Se conecta con el server
+
 
 # Lo de arriba es una plantilla
 
-# Aquí es donde hacemos todo EL CLIENTE
+# Aquí es donde hacemos todo EL CLIENTE TELNET
 
-while True:
+while True: # Este bucle infinito, estará esperando a el servidor le conteste.
 	command = input("%s> " % HOST) # Establecemos el input, string del comando
 
 	if command == 'exit': break # Si el comando introducido es exit, salimos del programa
-	
-	pipeData = Popen(command, shell=True, stdout=PIPE) # Popen (shell=True --> es perquè funcioni) # El Popen para enviarle la ORDEN al SERVIDOR, mediante el SOCKET
-	
-	for line in pipeData.stdout: # Recorremos cada línea del stdout (pipeData)
-    		s.send(line) # Lo envia en el servidor
 
-	while True:
-		data = s.recv(1024) # Lo recoge del Socket
-		if str(data) == 'yata': break
-		print(str(data))
+	s.send(bytes(command, 'utf-8')) # Envía mediante el socket el comando introducido en modo bytes
+	
+	while True: # Se realiza otro bucle para recibir y mostrar las líneas. 
+	
+		data = s.recv(1024) # Recibe las líneas
+		if data[-1:] == FI: 
+			print('Received', repr(data[:-1])) # Muestra todo menos el último
+			break # Si la última línea de los datos sea el FI, sale del bucle
+		print('Received', repr(data))
 
 s.close()  # Tanquem el socket (connexió)
 sys.exit(0)
