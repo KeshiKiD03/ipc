@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser(description=\
         """TELNET SERVER""")
 
 parser.add_argument("-p","--port",type=int, default=50001)
+parser.add_argument("-d","--debug",action='store_true',default=False) # La opción es para que le aparezca debug
 
 args=parser.parse_args()
 # -------------------------------------
@@ -37,7 +38,7 @@ if pid != 0:    # Fem l'if en funció el PID al pare.
 # --- Todo lo de abajo es el proceso hijo ----
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # Reusa SOCKET
 s.bind((HOST,PORT))
 s.listen(1)
 
@@ -45,27 +46,29 @@ s.listen(1)
 # Lo de arriba es una plantilla
 
 # Aquí es donde se hace TODO
-
 while True: # Bucle infinit # Bucle infinit (atendre connexions un darrera l'altre)
-  conn, addr = s.accept() # Guardem les variables conn i addr
-  print("Connected by", addr) #  Printem
-  while True:
-  llistaPeers.append(addr) # Lo añade a una LISTA
-  fileName="/tmp/%s-%s-%s.log" % (addr[0],addr[1],time.strftime("%Y%m%d-%H%M%S"))
-  fileLog=open(fileName,"w")
-  while True:
-  	data = conn.recv(1024)
-  	if not data: break # Cuando el otro me ha penjado el teléfono cierra
-  	fileLog.write(str(data))
-  conn.close() # Cierra la conexión # Liberar el SOCKET.
-  fileLog.close() # Cierra
-  
-  
-  	
-	pipeData = Popen(command, shell=True, stdout=PIPE) # Popen (shell=True --> es perquè funcioni) # El Popen para enviarle la ORDEN al SERVIDOR, mediante el SOCKET
-	
-	for line in pipeData.stdout: # Recorremos cada línea del stdout (pipeData)
-    		s.send(line) # Lo envia en el servidor
+    conn, addr = s.accept() # Guardem les variables conn i addr
+    print("Connected by", addr) #  Printem
+    while True:
+        command = conn.recv(1024) # Recibe data
+        if args.debug: # Args.debug = DebugImprime en el servidor el resultado
+            print ("Telnet> %s" % (command)) # Imprime el comando
+        if not command: break # Cuando el otro me ha penjado el teléfono cierra.
+        pipeData = Popen(command, shell=True, stdout=PIPE, stderr=PIPE) # Hace un Popeen que hace PWD 
+		# Iterar linea a linea y muestra el resultado de este POPEN
+        for line in pipeData.stdout: # Recorre cada linea del Popen # Pipe de SALIDA
+            if args.debug:
+                print(line) # Printa cada línea.
+            conn.sendall(line) # Envía la línea # Se asegura de vacíar el bufer, envía todo.
+        for line in pipeData.stderr:# Pipe de ERROR
+            if args.debug:
+                print("Error: %s" % line)
+            conn.sendall(line) # Envía la línea    
+        conn.sendall(FI)
+    conn.close() # Cierra la conexión # Liberar el SOCKET. # El cliente termina la conexión
+# s.close()
+sys.exit(0)
+
   # Acepta un CLIENTE
   
   
