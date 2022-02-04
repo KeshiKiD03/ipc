@@ -30,7 +30,7 @@ pid=os.fork() # Hace un duplicado, lo creaba y se ejecutaba.
 
 
 if pid != 0:    # Fem l'if en funció el PID al pare.
-  print("Engegat el server CAL:", pid)
+  print("Engegat el server TELNET:", pid)
   sys.exit(0)   # Apaga el proceso padre, mientras que el hijo seguía encendido.
 
 # NOMÉS S'EXECUTARÀN AL PROGRAMA FILL JA QUE EL PROGRAMA PARE JA ES MORT!!!

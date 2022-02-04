@@ -37,7 +37,7 @@ while True: # Este bucle infinito, estará esperando a el servidor le conteste.
 	
 		data = s.recv(1024) # Recibe las líneas
 		if data[-1:] == FI: break # Si la última línea de los datos sea el FI, sale del bucle
-		print(data) # Printamos resultados
+		print(data.decode("utf-8")) # Printamos resultados
 
 s.close()  # Tanquem el socket (connexió)
 sys.exit(0)

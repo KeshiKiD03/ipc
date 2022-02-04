@@ -146,15 +146,184 @@ isx36579183@i11:/tmp/m01$
 
 ##################################################################
 
+##### TEORIA FILE DESCRIPTOR #### FILE HADER
+
+* FD --> File Descriptor / Windows es File Hader.
+
+	* Todo fichero que se abre tienen un número que lo identifica.
+	
+	* En PYTHON se hace una orden que se llama open()
+	
+		* Cuando hace open, retorna un número, fichero (32).
+		
+			* Cada vez que pones algo en Python, el SO le dice a Python que escriba o lee una nueva línea en el fichero 32.
+			
+	* Es un número, no es un entero, es file. Representa un "file descriptor" en el cual vas a parar a un fichero.
+
+	* FD:
+	
+		* Que es 0 --> Entrada ESTÁNDAR.
+		
+		* Que es 1 --> Salida ESTÁNDAR
+		
+		* Que es 2 --> Salida ERROR
 
 
+## EJEMPLO
+
+isx36579183@i11:/tmp/m01$ ls -l /proc/10113/fd
+total 0
+lrwx------ 1 isx36579183 hisx2 64 Jan 18 10:42 0 -> /dev/pts/1
+l-wx------ 1 isx36579183 hisx2 64 Jan 18 10:42 1 -> /tmp/m01/nom.txt
+lrwx------ 1 isx36579183 hisx2 64 Jan 18 10:42 2 -> /dev/pts/1
+isx36579183@i11:/tmp/m01$ 
 
 
+* La salida estandar, no está en la terminal --> /dev/pts/1 (Es la terminal)
 
+* La SALIDA de orden CAT, la envía al flujo 1 (Entrada estándar), pero el SISTEMA OPERATIVO ha redirigido que todo lo que vaya al 1, en realidad está asociada al fichero /tmp/m01/nom.txt (Fichero)
+
+/dev/pts/1 --> Es la consola
 
 
 
 ##################################################################
+
+
+## DESPUÉS DE LA PAUSA
+
+## CAT
+
+cat | sort | wc -l > hola.txt
+
+ps ax - Cogemos el PID de CAT o con pgrep cat
+
+keshi@KeshiKiD03:~/Documents$ ls -l /proc/25672/fd/
+total 0
+lrwx------ 1 keshi keshi 64 feb  4 00:22 0 -> /dev/pts/5
+l-wx------ 1 keshi keshi 64 feb  4 00:22 1 -> 'pipe:[304105]'
+lrwx------ 1 keshi keshi 64 feb  4 00:22 2 -> /dev/pts/5
+keshi@KeshiKiD03:~/Documents$ 
+
+* Representación, la entrada estándar es el teclado "/dev/pts/5" (Consola numero 5).
+
+* La salida estándar del CAT es un PIPE, escribe en un PIPE.
+
+* La salida de ERROR es la pantalla.
+
+
+--------------
+
+## SORT
+
+keshi@KeshiKiD03:~/Documents$ pgrep sort
+25673
+keshi@KeshiKiD03:~/Documents$ ls -l /proc/25673/fd/
+total 0
+lr-x------ 1 keshi keshi 64 feb  4 00:32 0 -> 'pipe:[304105]'
+l-wx------ 1 keshi keshi 64 feb  4 00:32 1 -> 'pipe:[304107]'
+lrwx------ 1 keshi keshi 64 feb  4 00:32 2 -> /dev/pts/5
+keshi@KeshiKiD03:~/Documents$ 
+
+* La entrada estándar proviene de un PIPE
+
+* La salida estándar saldrá por un PIPE.
+
+* El SO modifica la información.
+
+
+
+
+
+-------
+
+## WC
+
+keshi@KeshiKiD03:~/Documents$ ls -l /proc/25674/fd/
+total 0
+lr-x------ 1 keshi keshi 64 feb  4 00:43 0 -> 'pipe:[304107]'
+l-wx------ 1 keshi keshi 64 feb  4 00:43 1 -> /home/keshi/Documents/hola.txt
+lrwx------ 1 keshi keshi 64 feb  4 00:43 2 -> /dev/pts/5
+keshi@KeshiKiD03:~/Documents$ 
+
+
+
+
+
+
+-----------
+
+
+
+## EJEMPLO PRÁCTICO SISTEMAS PIPES / TUBOS
+ 
+mkfifo /tmp/dades --> Serveix per crear estructures de dispositius.
+
+ls -l /tmp/dades
+
+prw-rw-r-- 1 keshi keshi 0 feb  3 23:58 /tmp/dades --> Se genera un PIPE
+
+tail -f /tmp/dades --> Mostra tot lo que es va vomitant al final del fitxer. (follow)
+
+tail > /tmp/dades --> Apareix a l'altre extrem del tubo
+
+# Prueba
+
+date > /tmp/dades
+
+keshi@KeshiKiD03:~/Documents$ tail -f /tmp/dades
+vie 04 feb 2022 00:01:06 CET
+vie 04 feb 2022 00:45:48 CET
+
+
+
+
+
+## PRUEBA
+
+keshi@KeshiKiD03:~/Documents$ cat push-ipc.sh > /tmp/dades
+keshi@KeshiKiD03:~/Documents$ ip a | head -n 10 > /tmp/dades
+keshi@KeshiKiD03:~/Documents$ 
+
+## VERIFICACIÓN 
+
+#! /bin/bash
+git push https://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@github.com/KeshiKiD03/ipc.git
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp10s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 60:a4:4c:63:be:e7 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.18/24 brd 192.168.0.255 scope global dynamic noprefixroute enp10s0
+       valid_lft 69983sec preferred_lft 69983sec
+
+
+
+* Se genera un TUBO / PIPE con mkfifo y se vomita todo al otro lado. Con stdOUT (1).
+
+* Hay programas que pueden escribir por un lado del tubo y otros pueden leer por el otro lado del tubo.
+
+
+
+# Named Pipe
+
+# named pipe
+
+# mkfifo nom
+
+# Tenemos 2 tubos donde uno escribe y el otro lee
+
+
+
+
+
+
+
+* EJEMPLO REPRESENTACIÓN VIRTUAL DE PROCESOS
 
 ls /proc --> Representació virtual de los procesos
 
@@ -201,11 +370,13 @@ isx36579183@i11:/tmp/m01$
  
  ##################################################################
 
+
+
 # cmdline --> Contiene la línea de ordenes.
 
 # environ --> Hereda las variables de entorno. Todo lo que se hace un EXPORT. Si fuesemos a parar a un subshell.
 
-# stat
+# stat --> Contiene estados
 
 isx36579183@i11:/tmp/m01$ cat /proc/10113/stat
 10113 (cat) S 9379 10113 9379 34817 10113 4194304 119 0 0 0 0 0 0 0 20 0 1 0 287494 5570560 141 18446744073709551615 94296076836864 94296076854953 140732828800944 0 0 0 0 0 0 0 0 0 17 6 0 0 0 0 0 94296076872784 94296076874368 94296110166016 140732828804307 140732828804311 140732828804311 140732828807147 0
@@ -243,7 +414,7 @@ isx36579183@i11:/tmp/m01$
 
 2 --> Salida de error.
 
-* La salida estandar, no está en la terminal --> /dev/pst/1
+* La salida estandar, no está en la terminal --> /dev/pts/1 (Es la terminal)
 
 * La orden CAT redirige /tmp/m01/nom.txt
 
@@ -308,18 +479,6 @@ isx36579183@i11:/proc/10694$
 
 ##################################################################
  
- 
-mkfifo /tmp/dades
-
-ls -l /tmp/dades
-
-tail -f /tmp/dades
-
-# Fabrica un tubo
-
-date > /tmp/dades
-
- 
 
 
 
@@ -333,13 +492,7 @@ Tue 18 Jan 2022 11:28:04 AM CET
 
 ```
 
-# Named Pipe
 
-# named pipe
-
-# mkfifo nom
-
-# Tenemos 2 tubos donde uno escribe y el otro lee
 
 --------------------------------------------------------------------------------
 
@@ -365,6 +518,61 @@ El 3 apunta a tmp.carta
 
 
 
+
+
+## Definición del programa 11-EXEMPLE-POPEN.PY
+
+* Los argumentos que tiene
+
+	* RUTA (Positional)
+	
+* Es la primera forma de comunicación entre procesos, es un POPEN
+
+
+# Popen --> Es un constructor de una Clase. Es un módulo de Python que permite crear PIPES.
+
+## Metodologia
+
+1. El primer argumento es un ls y el segundo es la ruta (args.ruta)
+
+2. Se almacenan en command.
+
+3. Se abre el PIPE --> pipeData = Popen(command, stdout=PIPE) --> Crea un TUBO / POPEN, POPEN ES UN PIPE.
+
+	3.1. En un extremo del tubo el COMANDO (command) y el otro EL ARGUMENTO POSICIONAL (args.ruta).
+
+4. El command, genera una salida, esta información.
+
+	4.1. Si fuera un ls del sistema operativo.
+	
+		* ls / | programa.py --> Genera un comando y va a parar al programa de python.
+
+5. Ha generado una serie de información y ha pasado por el tubo y ha salido por el tubo.
+
+6. pipeData = Popen(command, stdout=PIPE) --> stdout=PIPE --> El command, su stdout lo envía al PIPE. Si quiere mostrar toda su información, lo saca por el TUBO/PIPE. Antes, tiene que leer del TUBO/PIPE.
+
+* Quiere decir que el programa debe LEER por el PIPE (0) y lo vomita en el PIPE (1).
+
+7. Se recorre cada LÍNEA de la salida ESTÁNDAR (pipeData.stdout), printa la línea.
+
+8. print(line) --> Si no está con el formato adecuado, se puede usar un método que es decode("utf-8").
+
+9. En el final le quita el espacio.
+
+10. Estamos vomitando información hacía fuera --> stdout --> Vomita a fuera.
+
+11. Si soy el PROGRAMA DE PYTHON y quiero leer esta información --> Tiene que hacer un read del stdout.
+
+
+En resumen: 
+
+* Tenemos un mecanismo donde ejecutamos una orden, cualquier orden.
+
+* Se ejecuta
+
+* El resultado retorna al programa de Python y el programa de Python lo lee como si fuera un fichero.
+
+
 | 🔥11-EXEMPLE-POPEN.PY❗🔥 | 
 
 
@@ -382,12 +590,12 @@ from subprocess import Popen, PIPE
 parser = argparse.ArgumentParser(description=\
         """Exemple popen""")
 parser.add_argument("ruta",type=str,\
-        help="directori a llistar")
+        help="directori a llistar") # Positional
 args=parser.parse_args()
 # -------------------------------------------------------
 command = ["ls", args.ruta]
-pipeData = Popen(command, stdout=PIPE)
-for line in pipeData.stdout:
+pipeData = Popen(command, stdout=PIPE) # Definimos el pipe
+for line in pipeData.stdout: # Bucle que lee cada línea del tubo/pipe.stdout
     print(line.decode("utf-8"), end=" ")
 exit(0)
 
