@@ -11,6 +11,9 @@ from subprocess import Popen, PIPE
 # -------------------------------------------------------
 command = " psql -qtA -F',' -h 172.17.0.2 -U edtasixm06 training -c \"select * from clientes; \""
 pipeData = Popen(command,shell=True,stdout=PIPE)
+# stdout = PIPE --> Si el argumento no es PIPE, no hace nada. Si el argumento es PIPE, será un objeto legible.
+# Será un flujo donde se puede leer. Estamos leyendo la salida de la orden CLIENTE.
+# Si decimos pipeData.stdout --> Es un bufer donde leerá cosas, es un flujo.
 for line in pipeData.stdout:
   print(line.decode("utf-8"), end="")
 exit(0)
@@ -20,20 +23,73 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+**12-popen-sql.py** 
+
+  Es pot fer una primera versió tot hardcoded sense diàleg amb: 
+  psql -qtA -F';' training  -c “select * from oficinas;”.
+  Executa la consulta “select * from oficinas;” usant psq.  
+  Atenció: posar al popen shell=True.
+  Podem usar un container Docker amb la bd training de postgres
+  fent:
+
+```
+Hi ha un docker a dockerhub:
+$ docker run --rm --name psql -h psql -it edtasixm06/postgres /bin/bash
+
+A la adreça de github [asixm06-docker](https://github.com/edtasixm06/asixm06-docker/tree/master/postgres:base) hi la les ordres per engegar el postgres.
+
+Cal fer-les per posar en marxa el servei i inicialitzar la base de dades.
+$ su -l postgres
+$ /usr/bin/pg_ctl -D /var/lib/pgsql/data -l logfile start
+
+Verificar el funcionament des de dins del container:
+$ psql -qtA -F',' training -c "select * from clientes;"
+
+
+Des del host executar consultes, cal indicar la adreça ip del container al que connectem, i l’usuari (role) que és edtasixm06:
+$  psql -qtA -F',' -h 172.17.0.2 -U edtasixm06 training -c "select * from clientes;"
+
+Si volem que el container faci map a un dels ports del host:
+$ docker run --rm --name psql -h psql -p 5432:5432  -it edtasixm06/postgres /bin/bash
+$inicialitzar des de dins del docker
+$ psql -qtA -F','  -h d02  -U edtasixm06 training -c "select * from oficinas;"
+```
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
+**12-popen-sql.py** 
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
+  Es pot fer una primera versió tot hardcoded sense diàleg amb: 
+  psql -qtA -F';' training  -c “select * from oficinas;”.
+  Executa la consulta “select * from oficinas;” usant psq.  
+  Atenció: posar al popen shell=True.
+  Podem usar un container Docker amb la bd training de postgres
+  fent:
 
-Sinpsys: $ head [file] 
+```
+Hi ha un docker a dockerhub:
+$ docker run --rm --name psql -h psql -it edtasixm06/postgres /bin/bash
+
+A la adreça de github [asixm06-docker](https://github.com/edtasixm06/asixm06-docker/tree/master/postgres:base) hi la les ordres per engegar el postgres.
+
+Cal fer-les per posar en marxa el servei i inicialitzar la base de dades.
+$ su -l postgres
+$ /usr/bin/pg_ctl -D /var/lib/pgsql/data -l logfile start
+
+Verificar el funcionament des de dins del container:
+$ psql -qtA -F',' training -c "select * from clientes;"
+
+
+Des del host executar consultes, cal indicar la adreça ip del container al que connectem, i l’usuari (role) que és edtasixm06:
+$  psql -qtA -F',' -h 172.17.0.2 -U edtasixm06 training -c "select * from clientes;"
+
+Si volem que el container faci map a un dels ports del host:
+$ docker run --rm --name psql -h psql -p 5432:5432  -it edtasixm06/postgres /bin/bash
+$inicialitzar des de dins del docker
+$ psql -qtA -F','  -h d02  -U edtasixm06 training -c "select * from oficinas;"
+```
 
 
 # ----------------------------------------------
@@ -43,13 +99,15 @@ Sinpsys: $ head [file]
 
 ##################### POPEN ########################
 
-# Ejecute un POPEN
+## POPEN CONSTRUCTOR
 
-- Que haga una consulta SQL contra una BD SQL.
+* La clase es subproces.Popen()
 
-- Listar SELECT * FROM oficines;
+* Si hacemos from subprocess import Popen, PIPE
 
-
+  * Sólamente importaremos
+  
+* Al popen le pasamos el "programa ejecutable", se le pasa como argumento el stdout=PIPE.
 
 
 --------------------------------------------------------------------------------
