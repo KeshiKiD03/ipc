@@ -57,6 +57,11 @@ $ psql -qtA -F','  -h d02  -U edtasixm06 training -c "select * from oficinas;"
 
 # ----------------------------------------------
 
+# Resumen 
+
+1. 
+
+
 ## Explicación
 
 **12-popen-sql.py** 
