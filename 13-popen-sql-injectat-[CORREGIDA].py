@@ -1,23 +1,41 @@
 # /usr/bin/python
 #-*- coding: utf-8-*-
 #
-# popen-sql.py
+# 13-popen-sql-injectat.py
 # -------------------------------------
-# @ edt ASIX M06 Curs 2019-2020
-# Gener 2020
+# @ edt ASIX M06 Curs 2021-2022
+# Gener 2022
 # -------------------------------------
-import sys, argparse
+# Utilitza el docker edtasixm06/postgres
+# -----------------------------------------
+#commandLocal = "psql -qtA -F ';' lab_clinic -c 'select * from pacients;'"
+#commandRemote = "psql -qtA -h i11 -U postgres -F ';' lab_clinic -c 'select * from pacients;'"
+# -------------------------------------------
+import sys
 from subprocess import Popen, PIPE
-# -------------------------------------------------------
-
-
-command = "psql -qtA -F',' -h 172.17.0.2 -U edtasixm06 training -c \"select * from clientes; \""
-pipeData = Popen(command,shell=True,stdout=PIPE)
+import argparse
+parser = argparse.ArgumentParser(description='Consulta SQL interactiva')
+parser.add_argument('sqlStatment', help='Sentència SQL a executar',metavar='sentènciaSQL')
+args = parser.parse_args()
+#----------------------------------------------------------
+cmd = "psql -qtA -F',' -h 172.17.0.2 -U postgres  training"
+pipeData = Popen(cmd, shell = True, bufsize=0, universal_newlines=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+pipeData.stdin.write("select * from oficinas;\n\q\n")
 for line in pipeData.stdout:
-  print(line.decode("utf-8"), end="")
-exit(0)
+  print(line, end="")
+sys.exit(0)
+
 
 # SOLUCIÓN
+"""
+  1. Se importa SYS y desde subproceso, Popen y PIPE.
+  2. Se importa también argparse.
+  3. Se inicializa el ARGPARSE con una descripción.
+  4. Se añade un argumento que será una sentencia SQL, será posicional.
+  5. La entrada estándar, salida estándar y salida de error será PIPE.
+  6. En la entrada estándar, hacemos un WRITE hacemos una sentencia SQL. --> \n --> Salto de línea y \q es ENTER y \n salto de línea.
+  7. Se recorre con un for la salida estándar de cada línea y se printa.
+"""
 
 
 
@@ -25,20 +43,21 @@ exit(0)
 
 ## NOMBRE DEL PROGRAMA + SINTAXIS
 
-**01-head.py [file]**
-  
-  Mostrar les deu primeres línies de file o stdin
+**13-popen-sql-injectat.py  consulta**
+
+  Fer que la sentència sql a fer sigui un argument tot entre cometes 
+  que es passa com a argument.
+  sql injectat: perills d’injectar codi d’usuari en els programes.
 
 # ----------------------------------------------
 
 ## Explicación
 
-Mostrar les 10 primeres línies d'un fitxer. 
-El nom del fitxer a mostrar es rep com a argument, sinó es rep, 
+**13-popen-sql-injectat.py  consulta**
 
-es mostren les deu primeres línies de  l'entrada estàndard. 
-
-Sinpsys: $ head [file] 
+  Fer que la sentència sql a fer sigui un argument tot entre cometes 
+  que es passa com a argument.
+  sql injectat: perills d’injectar codi d’usuari en els programes.
 
 
 # ----------------------------------------------
