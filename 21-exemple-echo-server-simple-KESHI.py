@@ -1,17 +1,17 @@
 # /usr/bin/python3
 #-*- coding: utf-8-*-
 #
-# exemple-echoClient.py  
+# exemple-echo-server-KESHI.py  
 # -------------------------------------
 # @ edt ASIX M06 Curs 2021-2022
 # Gener 2022
 # -------------------------------------
 import sys,socket
 #--------------------------------------
-HOST = 'localhost'   # Definim la constant 'HOST' --> Si no val res = 'localhost' --> Indica el host on atacarem.
+HOST = ''   # Definim la constant 'HOST' --> Si no val res = 'localhost' --> Indica el host on atacarem.
 #HOST = 'i23'
-#PORT = 50001    # Definim port per connectar-nos al servidor (ex 21 (server))
-PORT = 7    # Definim el 'PORT' contra el que volem connectar-nos (7 = echo)
+PORT = 50001    # Definim port per connectar-nos al servidor (ex 21 (server))
+#PORT = 7    # Definim el 'PORT' contra el que volem connectar-nos (7 = echo)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   # Constructor de socket (socket.socket), construeix un "endoll" | socket.AF_INET --> per defecte | socket.SOCK_STREAM --> quan diu 'STREAM' és en TCP, 'DGRAM' és en UDP.
 #s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)   # Ens permet reutilitzar les IPs
