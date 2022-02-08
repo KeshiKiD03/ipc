@@ -19,7 +19,7 @@ import sys,socket
 HOST = 'localhost'
 PORT = 50001
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   # Constructor...
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   # Constructor de socket (socket.socket), construeix un "endoll" | socket.AF_INET --> per defecte | socket.SOCK_STREAM --> quan diu 'STREAM' és en TCP, 'DGRAM' és en UDP.
 s.bind((HOST,PORT)) # lliga el servei amb una connexió concreta (IP:port)
 s.listen(1) # S'ha de possar per força
 conn, addr = s.accept() # El servidor és queda clavat aquí fins que s'accepti una connexió --> Retorna una tupla (primer valor (objecte de tipus connection --> 'conn'), segon valor (adreça --> 'addr')
