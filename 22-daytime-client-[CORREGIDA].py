@@ -9,14 +9,19 @@
 # -------------------------------------
 import sys,socket
 # -------------------------------------
-HOST = ''
-PORT = 50001
-#PORT = 13
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
+HOST = '' # Se define una constante al HOST a la que atacar
+#PORT = 50001 # Se define una constante al PUERTO a atacar
+PORT = 13
 
-while True: # Bucle perquè no sabem quan acabarà ja que no sabem quantes línees ens enviarà
-  data = s.recv(1024)   # El client rep la data
+#### -------- PLANTILLA SOCKET
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Se crea el constructor del SOCKET
+s.connect((HOST, PORT)) # Se conecta al HOST y PUERTO
+
+#### -------- 
+
+while True: # Bucle que permite escuchar Infinitamente, porque no sabemos cuantas líneas enviará. # Bucle perquè no sabem quan acabarà ja que no sabem quantes línees ens enviarà
+  data = s.recv(1024)   # El client rep la data del servidor.
   if not data: # s'ha tancat la connexió (SERVER FINALITZA)
       break
   print('Data:', repr(data))

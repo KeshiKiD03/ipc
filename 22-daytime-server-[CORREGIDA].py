@@ -9,18 +9,28 @@
 import sys,socket
 from subprocess import Popen, PIPE
 # ------------------------------------
-HOST = ''
-PORT = 50001
+HOST = ''   # Definim la constant 'HOST' --> Si no val res = 'localhost' --> Indica el host on atacarem.
+#HOST = 'i23'
+PORT = 50001    # Definim port per connectar-nos al servidor (ex 21 (server))
+#PORT = 13    # Definim el 'PORT' contra el que volem connectar-nos (13 = DAYTIME)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind((HOST,PORT))
-s.listen(1) # Escolta
-conn, addr = s.accept() # Accepta la connexió
-print("Connected by", addr) # Rep la connexió
+### --------- PLANTILLA SOCKET
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   # Constructor de socket (socket.socket), construeix un "endoll" | socket.AF_INET --> per defecte | socket.SOCK_STREAM --> quan diu 'STREAM' és en TCP, 'DGRAM' és en UDP.
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)   # Ens permet reutilitzar les IPs
+
+s.bind((HOST,PORT)) # Hace el enlace del HOST y PORT. 
+
+s.listen(1) # Se pone a escuchar.
+
+conn, addr = s.accept() # Implementa el ACCEPT. # Hasta que no acepte la conexión, no hace el accept.
+# Retorna una TUPLA --> CONNECTION (SOCKET) Y ADDRESS (IP y PUERTO).
+print("Connected by", addr) # Printem qui s'ha connectat. Mostra IP
+
+# POPEN
 command = ["date"]  # Li especifiquem el command que utiltizarem
 pipeData = Popen(command,stdout=PIPE)   # Executem el popen
-
+# RECORRE EL POPEN Y LE ENVÍA EL COMANDO
 for line in pipeData.stdout:    # Retornem les línees
   conn.send(line)   # Enviem la líena
 conn.close()    # Tanquem la connexió
@@ -46,7 +56,7 @@ sys.exit(0)
 
 ## Metodología
 
-1. nc -l 5001
+1. Ataca a un servidor DAYTIME y le contesta al CLIENTE con la FECHA. Se usa POPEN para redirigir y vomitar toda la información en "la salida estándar".
 
 2. 
 
