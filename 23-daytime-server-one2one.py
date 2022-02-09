@@ -38,12 +38,15 @@ while True: # Bucle infinito # Bucle perquè no sabem quan acabarà ja que no sa
 	print("Connected by", addr) # Printem qui s'ha connectat. Mostra IP
 	command = ["date"]
 	# Li especifiquem el command que utiltizarem
-	pipeData = Popen(command,stdout=PIPE) # Executem el popen # La salida estándar será el PIPE
-	for line in pipeData.stdout:
-		conn.send(line)
-	conn.close()
+	pipeData = Popen(command,shell=True,stdout=PIPE)  # En la variable pipeData, le pasamos un POPEN(Contiene el COMANDO y la salida estándar PIPE) 
+	# La salida estándar será el PIPE
+# RECORRE EL POPEN Y LE ENVÍA EL COMANDO
+  	# Shell = True es IMPORTANTE
+	for line in pipeData.stdout: # Para cada línea de la salida estándar
+		conn.send(line) # Envía cada LÍNEA AL CLIENTE
+	conn.close() # Cierra la conexión con el CLIENTE.
 
-sys.exit(0)
+sys.exit(0) # Sale del PROGRAMA.
 
 """
 	* 23-daytime-server-one2one.py --> Se le pasa ARGUMENTO OPCIONAL --port o por default 50001.

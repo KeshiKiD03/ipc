@@ -9,24 +9,98 @@
 # -------------------------------------
 import sys,socket
 # -------------------------------------
-HOST = 'localhost'  # Definim la constant 'HOST' --> Si no val res = 'localhost' --> Indica el host on atacarem.
-PORT = 50001
-#PORT = 13
+HOST = 'localhost'  # Definim la constant 'HOST' --> Si no val res = 'localhost' --> Indica el host on atacarem. # Se define una constante al HOST a la que atacar
+PORT = 50001 # Se define una constante al PUERTO a atacar. Del SERVIDOR
+#PORT = 13 # Ataca DIRECTAMENTE al servidor XINETD de DAYTIME. Nmap localhost 13 daytime
 
 #### -------- PLANTILLA SOCKET
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Se crea el constructor del SOCKET
+s.connect((HOST, PORT)) # Se conecta al HOST y PUERTO
 
 #### -----------------
 
 #### ----- EL CLIENTE SE PONE A ESCUCHAR INFINITAMENTE
 
-while True: # Bucle perquè no sabem quan acabarà ja que no sabem quantes línees ens enviarà
-  data = s.recv(1024)   # El client rep la data
-  if not data: # s'ha tancat la connexió (SERVER FINALITZA)
+while True: # Bucle que permite escuchar Infinitamente, porque no sabemos cuantas líneas enviará. # Bucle perquè no sabem quan acabarà ja que no sabem quantes línees ens enviarà
+  data = s.recv(1024)   # El client rep la data del servidor. # Rep el missatge i contestarà. 
+# Està hardcoded, rebra un tamany fix de 1024
+  if not data: # s'ha tancat la connexió (SERVER FINALITZA!!!!)
       break
   print('Data:', repr(data)) # Printa resultados con b''
 s.close() # Cierra la conexión con el CLIENTE.
 
 sys.exit(0)
+
+
+"""
+
+## NOMBRE DEL PROGRAMA + SINTAXIS
+
+ * 22-daytime-client.py / 22-daytime-server.py 
+
+
+ * *One2one*: No té sentint que un servidor atengui un client i finalitzi. Una millora 
+   (elemental) és anar atenent els clients un a un. Es connecta un client, se l'atén, es tanca
+   la conexió amb aquest client i es passa a escoltar per rebre una nova conexió.
+   En aquest cas el server fa un bucle ininit, va atenent clients infinitament un darrera l'altre
+   (o si més no s'espera a entendre'ls). És per això que cal governar el servidor, per exemple
+   amb senyals.
+
+
+# ----------------------------------------------
+
+## Metodología
+
+1. El cliente envía datos. El servidor recibe los datos. 
+
+2. El programa recibe llama a la puerta
+
+Hace s.connect((HOST, PORT))
+
+# Se quedará enganchado hasta que alguien le abra la puerta.
+
+3. Cuando termina de escuchar? Cuando cierra de golpe.
+
+4. Como root se enciende el xinetd.
+
+5. 
+
+6.
+
+7.
+
+8.
+
+9.
+
+10.
+
+11.
+
+12.
+
+13.
+
+14.
+
+15.
+
+16.
+
+17.
+
+18.
+
+19.
+
+20.
+
+
+
+
+
+
+
+"""
+
