@@ -22,7 +22,7 @@ HOST = '' # 2. Se define una constante HOST (Localhost)
 PORT = args.port # 3. Se define el PORT donde cogerá por el ARGUMENTO (parser) (PARSER)
 ANY = args.any # 4. Se define una constante ANY que igual que el PORT, lo cogerá por el (parser)
 
-# -------------------- SIGNALS
+# -------------------- SIGNALS MYHANDLER
 
 # Definimos funciones para las SEÑAlES
 
@@ -43,9 +43,10 @@ def mysigterm(signum,frame): # 1. # Definim la funció del signal term (kill -15
   print(llistaPeers, len(llistaPeers)) # 3. # Mostrem una llista amb les connexions i el len de totes les connexions que han hagut
   sys.exit(0) # 4. SALE
   
-# -------------------- SIGNALS
+# -------------------- SIGNALS + FORK()
   
 pid=os.fork() # 1. # Crea una copia del PID, es decir crea un HIJO.
+
 if pid !=0: # 2. # Fem l'if en funció el PID al pare.
   print("Engegat el server CAL:", pid) # 3. El padre ha muerto pero el hijo sigue encendido.
   sys.exit(0) # 4. Sale del programa (Está en DETACH)
