@@ -2415,6 +2415,155 @@ sys.exit(0)
 
 
 
+## 27-ECHO-SERVER-MULTI.PY (SERVIDOR)
+
+# UF2 - Scripts / Programació de Sistemes
+
+# IPC Inter Process Comunication
+
+##################################################
+
+# COLOR DE TERMINAL #00FF64 + #000000
+
+## EXAMEN CON PREGUNTAS 20 PREGUNTAS ## 
+
+## HACER UN PROGRAMA EN PYTHON PRÁCTICO ## UF2 ES TODO LO QUE HEMOS HECHO DE PYTHON ##
+
+##################################################
+
+## EJERCICIO 27 ECHO SERVER MULTI ##
+
+* Para atender múltiples CONEXIONES
+
+	* Select.select (Python)
+	
+* Recibe argumentos 3 iterables de cosas que pueden esperar. --> Listas de espera.
+
+*  
+
+" The return value is a triple of lists of objects that are ready: subsets of the first three arguments. When the time-out is reached without a file descriptor becoming ready, three empty lists are returned. "
+
+* Retorna una triple lista, de un subconjunto que había en el inicio.
+
+
+* EJEMPLO
+
+* Retornará el nombre de esas 2 personas que han levantado el brazo para ser atendidos
+
+* Cuando haya acabado de atenderlos, volverá al "select.select"
+
+* Mirar si hay alumnos con el brazo levantado, volverá a atenderlos y sino, estarán esperando.
+
+* El juego es, mandaar una faena, cuando se termine, levantar el brazo.
+
++ En algún momento 2 alumnos levantan el brazo, se atienden.
+
++ Se termina, vuelve a mirar si alguien ha levantado el brazo y se atiende.
+
+
+
+## METODOLOGIA
+
+1. El cliente 1 se conecta al conns=[s]
+
+2. Si un cliente quiere conexión, levanta el brazo.
+
+3. Se almacena en ACTIUS (Los que han levantado el brazo).
+
+4. Hay un bucle porque puede que hayan persoans que han levantado el brazo.
+
+5. for actual = s in actius:
+
+6. 	if actual == s: # Es una conexión nueva? La s es el SOCKET VIRGEN. Para saberlo es lo que se ha movido es una s
+
+7.	El primer bucle es si hay una conexión nueva.
+
+	* Hace el accept() --> Pasa a tener una conn, addr (CONEXIÓN)
+	
+	* Se añade a una lista de cosas pendientes. --> conns.append(conn) # Es un objeto que se mete a "conns". 
+	
+	* conns = [s, c1, c2, c3]
+
+8.	El segundo es de los que ya están.
+
+9.	Si un nuevo cliente quiere conectarse, sacude el cable. Entra al bucle, busca la "s"
+
+Si se cierra y se abre, será una conexión nueva.
+
+
+
+---
+
+
+## ¿Cómo se programa?
+
+## Hay una lista se llama conns=[s] | Socket es la oreja que escucha | Cuando se conecta alguien se crea una CONEXIÓN.
+
+conns = [s, c1, c2, c3]
+
+
+
+## conns = Socket que escucha --> Lista conns --> Es poner la s (socket que escucha)
+
+
+
+
+
+---------
+
+[REVISAR LA ÚLTIMA PARTE DEL AUDIO 02.02.22 - 27 PY]
+
+actius: [s, c1] --> Genera actividad en el cable. 
+
+El bucle iterará 2.
+
+
+
+--------
+
+
+
+
+### PROGRAMA 27-ECHO-SERVER-MULTI.PY
+
+import socket, sys, select, os
+
+HOST = ''                 
+PORT = 50007             
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+s.listen(1)
+print(os.getpid())
+conns=[s] # Es el socket que "escucha", manda deberes y se pone a escuchar si alguien le llama.
+while True:
+    actius,x,y = select.select(conns,[],[]) # Llama el select.select, la primera es una lista de objetos iterables que se esperen para ser leídos, los 2 son read y write.
+    
+    # Actius = Retorna los que han levantado el brazo.
+    
+    # Actius : s, c1
+    
+    for actual in actius: # actual: s, c1, c2, c3, Si son nuevas conexiones # Es lo que se está procesando actualmente, no sabemos si es c1, c2, c3
+        if actual == s: # Si el actual es s
+            conn, addr = s.accept()
+            print('Connected by', addr)
+            conns.append(conn)
+        else: # Echo Server # Si no son nuevas conexiones
+            data = actual.recv(1024) # Escucha y recibe
+            if not data: # Si me han colgado
+                sys.stdout.write("Client finalitzat: %s \n" % (actual))
+                actual.close()
+                conns.remove(actual)
+            else:
+                actual.sendall(data) # Rebota, retorna el "hola" # Vuelve al bucle.
+                #actual.sendall(chr(4),socket.MSG_DONTWAIT)
+s.close()
+sys.exit(0)
+
+
+
+### SE TRATA DE ENTENDER ###
+
+### CONSTRUIR EL TELNET MÚLTIPLE
 
 
 
