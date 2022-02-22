@@ -1,0 +1,22 @@
+#! /usr/bin/python3
+#-*- coding: utf-8-*-
+#
+# Escola del Treball 2020-21
+#
+# M03 Programacio
+# (Tarea)
+# (Exercicio)
+#
+# Cristian Fernando Condolo Jimenez
+# isx41016667
+# (Fecha)
+# 
+# Descripcion:
+#
+# Version:
+
+# Juego de pruebas
+
+# E.E.
+
+# Programa
