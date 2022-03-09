@@ -1,0 +1,27 @@
+1) aten 1 a 1
+2) El mateix client pot fer varies ordres
+
+	---> dialeg EOT (4)
+while True # Acepta client
+
+	accept
+
+	while True # Procesa client
+	
+		read < -- recv ordre (processos, temps, ports)
+	
+		if not data break;
+		
+		if / elif / else command='ordre real' # Filtrado de procesos
+	
+		accions
+		
+		pipe (ordre) (ps ax, netstat, uname)
+		
+		for send
+		
+		send EOT
+	
+	close # Tanca Client
+
+# Client plega pasa al següent

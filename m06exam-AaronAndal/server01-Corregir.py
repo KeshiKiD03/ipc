@@ -98,13 +98,37 @@ while True: # Bucle infinit - (atendre connexions un darrera l'altre) - "ONE2ONE
 	conn, addr = s.accept() # Guardem les variables "conn" i "addr" # # Implementa el ACCEPT. 
         # Hasta que no acepte la conexión, no hace el accept. Se queda "enganchado".
 	# Retorna una TUPLA --> CONNECTION (SOCKET) Y ADDRESS (IP y PUERTO).
-	print("Connected by", addr) # Indica quién está conectado.
+	if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
+		print("Connected by", addr) # Indica quién está conectado.
 	llistaPeers.append(addr) # Lo registra en la LISTA de conexiones
   # En la lista vacía, cada HOST que se conecte al SERVIDOR, lo REGISTRA. Hace un APPEND. Lo añade al final de la LISTA (OBJETO).
 	while True: # Se realiza un BUCLE INFINITO para estar ESCUCHANDO el SERVIDOR.	
   		data = conn.recv(1024) # El servidor está recibiendo DATOS del CLIENTE. (Está recibiendo porque el CLIENTE le manda el COMANDO.)
-  		if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
-  			print ("Servidor> %s" % (data)) # Imprime el comando
+
+  		if data == 'processos':
+  			
+  			data = "ps ax"
+  				
+#  			print ("Servidor> %s" % (data)) # Imprime el comando
+  				
+  		elif data == 'ports':
+  			
+  			data = "netstat -puta"	
+  				
+#  			print ("Servidor> %s" % (data)) # Imprime el comando
+  			  	
+  		elif data == 'whoareyou':
+  		  	
+  			data = "uname -a"
+  			
+# 			print ("Servidor> %s" % (data)) # Imprime el comando
+  			  	
+  		else:
+  			
+  			data = "uname -a"
+  			
+#  			print ("Servidor> %s" % (data)) # Imprime el comando  		
+
   		if not data: break # Cuando el otro me ha penjado el teléfono cierra. Si ya no hay más datos a recibir por parte del CLIENTE, salta del programa.
   		pipeData = Popen(data, shell=True, stdout=PIPE, stderr=PIPE) # Se crea un TUBO (pipeData) donde enviará "data" por la SALIDA ESTÁNDAR (1) = PIPE y la SALIDA de ERROR también por el PIPE
   		for line in pipeData.stdout: # Se recorre cada LÍNEA de la SALIDA ESTÁNDAR (1)
@@ -128,6 +152,7 @@ sys.exit(0)
 			* En este caso SIEMPRE que haya alguien "TANTO CLIENTE como SERVIDOR estén ENVIANDO datos a través del SOCKET"
 			
 				* En este caso el CLIENTE manda el COMANDO por POPEN (stdout) y el SERVIDOR lo recive (data = conn.recv(1024))
+
 	RESUMEN:
 	
 		1. El CLIENTE NC quiere conectarse al SERVIDOR.
@@ -159,24 +184,53 @@ sys.exit(0)
 		2. 12 SIGUSR2 - Muestra CUANTOS SE HAN CONECTADO al SERVIDOR. len(llistaPeers)
 		
 		3. 15 Termina y sale del programa --> ACCIÓN: Printa los QUE SE HAN CONECTADO y CUANTOS (llistaPeers) se han CONECTADO (len(llistaPeers)).
+
+
 		----- IMPORTANTE
 		
 		* EL CLIENTE NETCAT mostrará TODOS LOS COMANDOS QUE LE PASEMOS "px ax" - "netstat -puta" - "uname -a"  ....
 		
 			* Órdenes que tampoco existen, lo procesa y muestra ERROR.
 			
+
 ####################################################3
+
+
 ### CORREGIDA EN CLASE
+
 PROGRAMA TIENE LA SEÑAL 1
+
 VA ACUMULANDO LAS SEÑALES
+
 SERVIDOR ONE 2 ONE --> ACEPTA UNA CONEXIÓN AL MISMO TIEMPO.
+
+
 Todo el programa va en el WHILE TRUE (Está todo ahí)
+
 El resto es una PLANTILLA. [IMPORTANTE]
+
+
+
+
+
+
+
 Se conectan al puerto 44444 y devuelve el RESULTADO por STDOUT (1) y si hubier ERROR pues por STDERR (2).
+
 El servidor hace un WHILE TRUE (Cada iteración atiende un cliente, a la propera atiende a otro).
+
+
+
+
 ### VERIFICACIÓN
+
+
+
 1. Necesitamos el NETCAT como CLIENTE
+
 	nc localhost 44444
+
+
 isx36579183@i14:~/Documents$ nc localhost 44444
 ls
 Apertura-Servidor01.png
@@ -212,11 +266,20 @@ ps ax
      15 ?        S      0:00 [cpuhp/0]
      16 ?        S      0:00 [cpuhp/1]
 .....
+
+
 uname -a
 Linux i14 5.10.0-8-amd64 #1 SMP Debian 5.10.46-4 (2021-08-03) x86_64 GNU/Linux
+
 netstat -puta
 /bin/sh: 1: netstat: not found
+
 vivakoeman 
 /bin/sh: 1: vivakoeman: not found
+
+
 ....
+
+
+
 """
