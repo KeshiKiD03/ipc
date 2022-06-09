@@ -1,0 +1,23 @@
+# RECUPERACIÓN PYTHON 10.06.22 - A APROBAR LECHES!!!
+
+##############
+Python Cheats#
+##############
+
+¡¡IMPORTANTE!!
+
+1. Pensar lo que hay que escribir
+
+2. Programar como ÉL / HAY que hacer!!
+
+3. Documentar cada línea.
+
+4. Identificar bien lo que pide.
+
+########################################################################################
+
+UBICACIÓN 	-	NOMBRE ARCHIVO 	-	RECURSO PYTHON
+
+edtasixm06/ipc2019	- Telnet26Pau		-	DEBUG
+
+KeshiKiD03/IPC		-  25PSServer.py	-	FileName (LOGS)
