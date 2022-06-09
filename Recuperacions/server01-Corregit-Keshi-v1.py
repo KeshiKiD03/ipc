@@ -115,7 +115,9 @@ while True: # Bucle infinit - (atendre connexions un darrera l'altre) - "ONE2ONE
   			break # Cuando el otro me ha penjado el teléfono cierra. Si ya no hay más datos a recibir por parte del CLIENTE, salta del programa.
   		# data = data[:-1] #new, eliminem el \r\n  (cada "\algo" es 1 char !!)
   		data = str.rstrip(data.decode('utf-8'))
-  		print("Comanda: ", data)
+  		if args.debug:
+			  print ("Comanda: ", data)
+		#print("Comanda: ", data)
   		if data == 'processos':
   			data = "ps ax"
   		elif data == 'ports':
@@ -222,7 +224,7 @@ args=parser.parse_args() # Apreta el botó de ARGPARSE
 
 #############################################################################################
 
-					SOCKETS
+					SIGNALS
 
 #############################################################################################
 
@@ -261,58 +263,224 @@ CHEATS:
 
 ONE BY ONE ES DECIR CUANDO TERMINA UN CLIENTE ATENDERÁ A OTRO NO VARIOS A LA VEZ!!!!!!!!!
 
+❏ Per a cada client el servidor atén les seves instruccions fins que el client decideix finalitzar la
+connexió. Una sessió client consta de tantes consultes al servidor com consideri oportú.
+
+
+ONE BY ONE ES DECIR CUANDO TERMINA UN CLIENTE ATENDERÁ A OTRO NO VARIOS A LA VEZ!!!!!!!!!
 
 
 
+1. SIGUSR1 --> LISTARÁ LAS CONEXIONES ESTABLECIDAS (IP Y PUERTO)
 
-1. Se inicializa el constructor de Argparse poniéndole la descripción.
+```
+def mysigusr1(signum,frame): # 1. Definim la funció del signal usr1 (kill -10)
+  print("Signal handler called with signal:", signum) # 2. Printa la señal rebuda
+  print(llistaPeers) # 3. Llistem la llista de connexions
+  sys.exit(0) # # 4. Surt del programa, si es vol mantenir i saber quants tenim, el comenten
+  
+```
+
+* MOSTRARÁ LA IP Y EL PUERTO DINÁMICO DEL CLIENTE POR EL CUAL SE HA CONECTADO
+
+2. SIGUSR2 --> 3. # Printamos la LONGITUD de la llista de connexions # Con la función len(lista)
+
+
+```
+def mysigusr2(signum,frame): # 1. Definim la funció del signal usr2 (kill -12)
+  print("Signal handler called with signal:", signum) # 2. Printa la señal rebuda
+  print(len(llistaPeers)) # 3. # Printem el len de la llista de connexions # Con la función len(lista)
+  sys.exit(0) # # 4. Surt del programa, si es vol mantenir i saber quants tenim, el comenten
+```
+
+3. SIGTERM - 15 # 4. Surt del programa, si es vol mantenir i saber quants tenim, el comenten
+
+```
+def mysigterm(signum,frame): # 1. # Definim la funció del signal term (kill -15)
+  print("Signal handler called with signal:", signum) # 2. Printa la señal rebuda
+  print(llistaPeers, len(llistaPeers)) # 3. # Mostrem una llista amb les connexions i el len de totes les connexions que han hagut
+  sys.exit(0) # # 4. Surt del programa, si es vol mantenir i saber quants tenim, el comenten
 
 ```
 
-```
 
-2. Se inicializa el constructor de Argparse poniéndole la descripción.
 
-```
 
-```
+#############################################################################################
 
-3. Se inicializa el constructor de Argparse poniéndole la descripción.
+					SIGNALS + FORK
 
-```
+#############################################################################################
 
-```
 
-4. Se inicializa el constructor de Argparse poniéndole la descripción.
 
-```
 
-```
+# -------------------- SIGNALS + FORK()
 
-2. Se inicializa el constructor de Argparse poniéndole la descripción.
+## A partir d'aquí es queda en DETACH!! EL PARE MOR PERO EL FILL ES QUEDA ESCOLTANT FINS A L'INFINIT I MÉS ENLLÀ!!!!!!!!!!!!
 
-```
+pid=os.fork() # 1. # Crea una copia del PID, es a dir, crea un FILL.
 
-```
+if pid !=0: # 2. # Fem l'if en funció del en funció del PID del Pare, espera al seu FILL.
+  print("Engegat el server KESHI:", pid) # 3. El padre ha muerto pero el hijo sigue encendido.
+  sys.exit(0) # 4. Sale del programa (Está en DETACH) // D'ara endavant mana el FILL, el crack.
 
-2. Se inicializa el constructor de Argparse poniéndole la descripción.
 
-```
+# NOMÉS S'EXECUTARÀN AL PROGRAMA FILL JA QUE EL PROGRAMA PARE JA ES MORT!!!
 
-```
 
-2. Se inicializa el constructor de Argparse poniéndole la descripción.
 
-```
+signal.signal(signal.SIGUSR1,mysigusr1) # 1. Se asocia al constructor de SIGNAL.signal --> por parámetro (La SEÑAL (SIGUSR1 = 10 (KILL -10)) recibida  (signal.SIGUSR1) + Llamará a la FUNCIÓN (mysigur1) = Listará la lista de Conexiones) 
 
-```
 
-2. Se inicializa el constructor de Argparse poniéndole la descripción.
+signal.signal(signal.SIGUSR2,mysigusr2) # 2. Se asocia al constructor de SIGNAL.signal --> por parámetro (La SEÑAL (SIGUSR1 = 12 (KILL -12)) recibida  (signal.SIGUSR2) + Llamará a la FUNCIÓN (mysigur2) = Listará la LONGITUD de CONEXIONES (len))
 
-```
+ 
+signal.signal(signal.SIGTERM,mysigterm) # 3. Se asocia al constructor de SIGNAL.signal --> por parámetro (La SEÑAL (SIGTERM = 15 (KILL -15)) recibida  (signal.SIGTERM) + Llamará a la FUNCIÓN (mysigterm) = Terminará el programa y LISTARÁ la lista y la LONGITUD de CONEXIONES (len)) 
 
-```
 
+
+
+
+
+#############################################################################################
+
+					SOCKETS
+
+#############################################################################################
+
+
+
+# -------------------- SERVIDOR ES POSA A ESCOLTAR (SOCKET ORIGEN)
+
+------------------------------------------------------------------------------------------
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+
+	# 1. Se activa el SOCKET / # Constructor de socket (socket.socket), construeix un "endoll" | socket.AF_INET --> per defecte | socket.SOCK_STREAM --> quan diu 'STREAM' és en TCP, 'DGRAM' és en UDP.
+
+------------------------------------------------------------------------------------------
+
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
+
+	# 2. Se reusa el SOCKET
+
+------------------------------------------------------------------------------------------
+
+s.bind((HOST,PORT)) 
+
+	# 3. Hace el enlace/lligam de HOST y PORT
+
+------------------------------------------------------------------------------------------
+
+s.listen(1) 
+
+	# 4. Se queda escuchando.
+
+
+
+
+
+#############################################################################################
+
+					EL PROGRAMA
+
+#############################################################################################
+
+
+
+# ---------------------------------- EL PROGRAMA
+
+############# 
+
+
+# Lo de arriba es una plantilla
+
+# Aquí es donde se hace TODO
+
+------------------------------------------------------------------------------------------
+
+while True: 
+
+	# Bucle infinit - (atendre connexions un darrera l'altre) - "ONE2ONE"
+
+	conn, addr = s.accept() 
+	
+		# Guardem les variables "conn" i "addr" # # Implementa el ACCEPT. 
+        	
+        	# Hasta que no acepte la conexión, no hace el accept. Se queda "enganchado".
+		
+		# Retorna una TUPLA --> CONNECTION (SOCKET) Y ADDRESS (IP y PUERTO).
+	
+------------------------------------------------------------------------------------------	
+
+	if args.debug: 
+	
+		# DEBUG = Args.debug --> Depura e Imprime en el servidor el resultado si no hay errores
+		
+------------------------------------------------------------------------------------------
+		
+		print("Connected by:", addr) 
+		
+			# Indica quién está conectado.
+
+------------------------------------------------------------------------------------------
+			
+	llistaPeers.append(addr)
+	
+		# Lo registra en la LISTA de conexiones.
+		
+		# Hace un APPEND, lo mete en lo último de la lista.	
+		
+		# En la lista vacía, cada HOST que se conecte al SERVIDOR, lo REGISTRA. 
+		
+		# Hace un APPEND. Lo añade al final de la LISTA (OBJETO).
+
+------------------------------------------------------------------------------------------		
+		
+	while True: 
+	
+		# Se realiza un BUCLE INFINITO para estar ESCUCHANDO el SERVIDOR.	
+  		
+  		data = conn.recv(1024) 
+  		
+  			# El servidor está recibiendo DATOS del CLIENTE. (Está recibiendo porque el CLIENTE le manda el COMANDO.)
+#  		data = str(str, 'UTF-8') # NO WORK
+#  		dataString = ''.join(map(chr, data)) # CONVERTIR BYTES A STRING
+#  		if args.debug:
+#  			print ("Comanda:", data)
+  		if not data:
+  			if args.debug:
+  				print("No s'ha rebut una comanda, tanco connexio amb %s ,adeu" % (addr[0]))
+  			conn.close() # Tanca la connexió
+  			break # Cuando el otro me ha penjado el teléfono cierra. Si ya no hay más datos a recibir por parte del CLIENTE, salta del programa.
+  		# data = data[:-1] #new, eliminem el \r\n  (cada "\algo" es 1 char !!)
+  		data = str.rstrip(data.decode('utf-8'))
+  		print("Comanda: ", data)
+  		if data == 'processos':
+  			data = "ps ax"
+  		elif data == 'ports':
+  			data = "netstat -puta"
+  		elif data == 'whoareyou':
+  			data = "uname -a"
+  		else:
+  			data = "uname -a"		
+  		pipeData = Popen(data, shell=True, stdout=PIPE, stderr=PIPE) # Se crea un TUBO (pipeData) donde enviará "data" por la SALIDA ESTÁNDAR (1) = PIPE y la SALIDA de ERROR también por el PIPE
+  		for line in pipeData.stdout: # Se recorre cada LÍNEA de la SALIDA ESTÁNDAR (1)
+#  			lineString = ''.join(map(chr, line))
+  			if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
+  				# lineString = ''.join(map(chr, line))
+  				print("Enviant:", line) # Printa cada línea.
+  			conn.sendall(line) # Envía la línea # Se asegura de vacíar el bufer, envía todo.
+  		for line in pipeData.stderr:# Pipe de ERROR
+  			#lineString = ''.join(map(chr, line))
+  			if args.debug:
+  				print("Enviant error:", line)
+  			conn.sendall(line) # Envía la línea
+  		conn.sendall(FI)
+	conn.close()
+s.close()
+sys.exit(0)
 ---------------------------------------------------------------------
 
 
