@@ -4,7 +4,6 @@
 # -------------------------------------
 # @ edt ASIX M06 Curs 2021-2022
 # Gener 2022
-# EXAMEN DE RECUPERACIÓ 10.06.2022
 # -------------------------------------
 import sys,socket,os,signal,argparse,time,codecs
 from subprocess import Popen, PIPE
@@ -17,9 +16,9 @@ from subprocess import Popen, PIPE
 
 # -------------------------------------
 parser = argparse.ArgumentParser(description=\
-        """Server Aaron Examen - RECUPERACIÓ, server01""")
+        """Server Aaron Examen, server01""")
 
-parser.add_argument("-d","--debug",action='store_true',default=True) # La opció es per a que hi surti el DEBUG
+parser.add_argument("-d","--debug",action='store_true',default=False) # La opció es per a que hi surti el DEBUG
 parser.add_argument("-p","--port",type=int, default=44444) # Argument opcional, per defecte es 44444
 
 args=parser.parse_args() # Apreta el botó de ARGPARSE
@@ -99,40 +98,43 @@ while True: # Bucle infinit - (atendre connexions un darrera l'altre) - "ONE2ONE
 	conn, addr = s.accept() # Guardem les variables "conn" i "addr" # # Implementa el ACCEPT. 
         # Hasta que no acepte la conexión, no hace el accept. Se queda "enganchado".
 	# Retorna una TUPLA --> CONNECTION (SOCKET) Y ADDRESS (IP y PUERTO).
-#	if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
-	print("Connected by:", addr) # Indica quién está conectado.
+	if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
+		print("Connected by:", addr) # Indica quién está conectado.
 	llistaPeers.append(addr) # Lo registra en la LISTA de conexiones
   # En la lista vacía, cada HOST que se conecte al SERVIDOR, lo REGISTRA. Hace un APPEND. Lo añade al final de la LISTA (OBJETO).
 	while True: # Se realiza un BUCLE INFINITO para estar ESCUCHANDO el SERVIDOR.	
   		data = conn.recv(1024) # El servidor está recibiendo DATOS del CLIENTE. (Está recibiendo porque el CLIENTE le manda el COMANDO.)
 #  		data = str(str, 'UTF-8') # NO WORK
 #  		dataString = ''.join(map(chr, data)) # CONVERTIR BYTES A STRING
-  		if args.debug:
-  			print ("Comanda:", data.decode("utf-8"))
+#  		if args.debug:
+#  			print ("Comanda:", data)
   		if not data:
-  			print("No s'ha rebut una comanda, adeu")
+  			if args.debug:
+  				print("No s'ha rebut una comanda, tanco connexio amb %s ,adeu" % (addr[0]))
   			conn.close() # Tanca la connexió
   			break # Cuando el otro me ha penjado el teléfono cierra. Si ya no hay más datos a recibir por parte del CLIENTE, salta del programa.
-  		data = data.decode("utf-8")
+  		# data = data[:-1] #new, eliminem el \r\n  (cada "\algo" es 1 char !!)
+  		data = str.rstrip(data.decode('utf-8'))
+  		print("Comanda: ", data)
   		if data == 'processos':
   			data = "ps ax"
-#  		elif data == 'ports':
-#  			data = "netstat -puta"
-#  		elif data == 'whoareyou':
-#  			data = "uname -a"
-#  		else:
-#  			data = "uname -a"		
+  		elif data == 'ports':
+  			data = "netstat -puta"
+  		elif data == 'whoareyou':
+  			data = "uname -a"
+  		else:
+  			data = "uname -a"		
   		pipeData = Popen(data, shell=True, stdout=PIPE, stderr=PIPE) # Se crea un TUBO (pipeData) donde enviará "data" por la SALIDA ESTÁNDAR (1) = PIPE y la SALIDA de ERROR también por el PIPE
   		for line in pipeData.stdout: # Se recorre cada LÍNEA de la SALIDA ESTÁNDAR (1)
 #  			lineString = ''.join(map(chr, line))
   			if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
   				# lineString = ''.join(map(chr, line))
-  				print("Enviant:", line.decode("utf-8")) # Printa cada línea.
+  				print("Enviant:", line) # Printa cada línea.
   			conn.sendall(line) # Envía la línea # Se asegura de vacíar el bufer, envía todo.
   		for line in pipeData.stderr:# Pipe de ERROR
   			#lineString = ''.join(map(chr, line))
   			if args.debug:
-  				print("Enviant error:", line.decode("utf-8"))
+  				print("Enviant error:", line)
   			conn.sendall(line) # Envía la línea
   		conn.sendall(FI)
 	conn.close()
@@ -141,18 +143,185 @@ sys.exit(0)
 
 """
 
-116
-#  			processos en rebre aquesta instrucció el servidor executarà l’ordre “ps ax” i retornarà el resultat al client.
+#################### EXPLICACIÓN OFICIAL #######################
+
+ENUNCIAT INICIAL: Escriu el programa "server01.py" que implementa un servidor amb les característiques que es descriuen a continuació.
+
+* Importante el nombre del programa
 
 
-117
-#  			ports en rebre aquesta ordre el servidor executarà l’ordre “netstat -puta” i retornarà el resultat al client. 
+---------------------------------------------------------------------
 
-119
-# 			whoareyou en rebre aquesta ordre el servidor executa l’ordre “uname -a” i retorna el resultat al client.
 
-120
-#  			Qualsevol altre ordre rebuda del client és processada igual que “whoareyou”.
+
+#############################################################################################
+
+					ARGPARSE
+
+#############################################################################################
+
+
+
+
+ENUNCIAT 1: El programa es crida amb la synopsis: prog [-d|--debug] [-p|--port]
+-d|--debug és un flag per indicar si cal que el servidor faci traça del que fa o no cal.
+-p|--port és un flag per indicar el port on escolta el servidor. Per defecte el 44444.
+
+
+CHEATS: 
+
+	Si es --debug o --port son ARGUMENTOS OPCIONALES.
+	
+	Debug ES UN "FLAG" requiere ACTION = "STORE_TRUE".
+	
+	PORT ES UN "FLAG" PER DEFECTE 44444
+	
+	FLAG = ARGPARSE
+
+1. Importar la libreria de ARGPARSE: import argparse
+
+```
+import sys,socket,os,signal,argparse,time,codecs
+from subprocess import Popen, PIPE
+```
+
+2. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+parser = argparse.ArgumentParser(description=\
+        Server Aaron Examen, server01)
+```
+
+
+3. Se añaden "argumentos" al ARGPARSE, entre ellas:
+
+
+-d | --debug --> ACTION = 'STORE_TRUE' , DEFAULT = FALSE
+
+* Sólo se iniciará todo lo que haya dentro de args.debug es decir si el VALOR es TRUE, si llamas al programa --> --debug o -d. ALMACENARÁ TRUE SI ES VERDADERO (BOOLEANO)
+
+* Es opcional ponerlo. ARGUMENTO OPCIONAL.
+
+
+-p | --port --> TYPE = INT, DEFAULT = 44444
+
+* Puerto por defecto será 44444 y será un INTEGER
+
+```
+parser.add_argument("-d","--debug",action='store_true',default=False) # La opció es per a que hi surti el DEBUG
+parser.add_argument("-p","--port",type=int, default=44444) # Argument opcional, per defecte es 44444
+
+```
+
+3. Se pulsa el BOTÓN ARGPARSE
+
+```
+args=parser.parse_args() # Apreta el botó de ARGPARSE
+```
+
+
+#############################################################################################
+
+					SOCKETS
+
+#############################################################################################
+
+ENUNCIAT 2: El servidor és un daemon que es queda en execució en "segon pla" i és governat amb senyals.
+
+Els senyals que rep i les accions que realitzen són:
+
+○ SIGUSR1: llista totes les connexions establertes fins ara (ip i port) i finalitza.
+
+○ SIGUSR2: indica el número total de connexions rebudes i finalitza.
+
+○ SIGTERM: finalitza tot mostrant el total de connexions i el llistat d’aquestes.
+
+
+CHEATS: 
+
+	DAEMON es un proceso
+	
+	En segundo plano = FORK
+	
+	GOBIERNA POR SEÑALES --> PLANTILLA
+	
+	SIGUSR1 = KILL -10 $(PGREP PYTHON)
+	
+		llista totes les connexions establertes fins ara (ip i port) i finalitza.
+		
+			print(llistaPeers)
+			
+			sys.exit(0)
+	
+	SIGUSER2 = KILL -12 $(PGREP PYTHON)
+	
+	
+	
+❏ El servidor atén clients d’un en un, el que a classe hem denominat One2One.
+
+ONE BY ONE ES DECIR CUANDO TERMINA UN CLIENTE ATENDERÁ A OTRO NO VARIOS A LA VEZ!!!!!!!!!
+
+
+
+
+
+1. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+
+```
+
+2. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+
+```
+
+3. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+
+```
+
+4. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+
+```
+
+2. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+
+```
+
+2. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+
+```
+
+2. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+
+```
+
+2. Se inicializa el constructor de Argparse poniéndole la descripción.
+
+```
+
+```
+
+---------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
 	TROUBLESHOOT: 

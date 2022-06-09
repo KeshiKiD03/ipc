@@ -113,7 +113,7 @@ while True: # Bucle infinit - (atendre connexions un darrera l'altre) - "ONE2ONE
   				print("No s'ha rebut una comanda, tanco connexio amb %s ,adeu" % (addr[0]))
   			conn.close() # Tanca la connexió
   			break # Cuando el otro me ha penjado el teléfono cierra. Si ya no hay más datos a recibir por parte del CLIENTE, salta del programa.
-  		data = data[:-1]
+  		data = data[:-1] #new, eliminem el \r\n  (cada "\algo" es 1 char !!)
   		print(data)
   		if data == b'processos':
   			data = "ps ax"
