@@ -21,3 +21,9 @@ UBICACIÓN 	-	NOMBRE ARCHIVO 	-	RECURSO PYTHON
 edtasixm06/ipc2019	- Telnet26Pau		-	DEBUG
 
 KeshiKiD03/IPC		-  25PSServer.py	-	FileName (LOGS)
+
+						- 	.decode("utf-8") --> CONVIERTE BYTES EN STRING
+						
+						-	.repr(variable) --> CONVIERTE BYTES EN STRING
+						
+						
