@@ -53,14 +53,14 @@ while True: # Bucle infinit # Bucle infinit (atendre connexions un darrera l'alt
 		data = conn.recv(1024)
 		print('Receive', repr(data))
 		if not data: break # Cuando el otro me ha penjado el teléfono cierra. 
-                pipeData = Popen(data, shell=True, stdout=PIPE, stderr=PIPE) 
+		pipeData = Popen(data, shell=True, stdout=PIPE, stderr=PIPE) 
                 # Hace un Popeen que hace PWD
                 # Iterar linea a linea y muestra el resultado de este POPEN
                 for line in pipeData.stdout: # Recorre cada linea del Popen
-                    conn.sendall(line) # Envía la línea # Se asegura de vacíar el bufer, envía todo
+                	conn.sendall(line) # Envía la línea # Se asegura de vacíar el bufer, envía todo
                 if DEBUG: sys.stderr.write(str(line,'utf-8')) # Permite la depuración por si hay envío
        	        for line in pipeData.stderr:
-        	    conn.sendall(line)
+        	    		conn.sendall(line)
         	if DEBUG: sys.stderr.write(str(line,'utf-8'))        
         	    conn.sendall(MYEOF)
 	conn.close() # Cierra la conexión # Liberar el SOCKET. # El cliente termina la conexión

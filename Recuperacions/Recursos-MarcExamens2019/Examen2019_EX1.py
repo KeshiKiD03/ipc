@@ -51,11 +51,17 @@ s.bind((HOST, PORT))
 s.listen(1)
 print(os.getpid()) 
 
+# LO DE ARRIBA ES PLANTILLA
+
+# EL PROGRAMA
+
 while True:         # One by One 
     conn, addr = s.accept() # rebem una petició de conexió
     llistaPeers.append(addr) # guardem IP a llistaPeers per printar després
     if args.debug: # si esta el debug, printem per pantalla
         print("Connectat el host:", addr)
+        
+    # SERVIDOR ENVIA PS -AX AL CLIENTE
     command = "ps -ax"
     pipeData = Popen(command,shell=True,stdout=PIPE,stderr=PIPE)
     

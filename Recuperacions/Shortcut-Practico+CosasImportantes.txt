@@ -30,4 +30,7 @@ KeshiKiD03/IPC		-  25PSServer.py	-	FileName (LOGS)
 						
 						-	.repr(variable) --> CONVIERTE BYTES EN STRING
 						
-						
+			REVISAR IMPORTANTE	-	Revisar importante Examens2019
+			
+			
+						-	La2 tiene FILENAME 	
