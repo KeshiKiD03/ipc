@@ -5,7 +5,7 @@
 # @ edt ASIX M06 Curs 2021-2022
 # Gener 2022
 # -------------------------------------
-import sys,socket,os,signal,argparse,time
+import sys,socket,os,signal,argparse,time,codecs
 from subprocess import Popen, PIPE
 
 # S'importen les LLIBRERIES SYS, SOCKET, OS, SIGNAL, ARGPARSE, TIME
@@ -18,7 +18,7 @@ from subprocess import Popen, PIPE
 parser = argparse.ArgumentParser(description=\
         """PS Server Aaron Examen, server01""")
 
-parser.add_argument("-d","--debug",action='store_true',default=False) # La opció es per a que hi surti el DEBUG
+parser.add_argument("-d","--debug",action='store_true',default=True) # La opció es per a que hi surti el DEBUG
 parser.add_argument("-p","--port",type=int, default=44444) # Argument opcional, per defecte es 44444
 
 args=parser.parse_args() # Apreta el botó de ARGPARSE
@@ -98,35 +98,41 @@ while True: # Bucle infinit - (atendre connexions un darrera l'altre) - "ONE2ONE
 	conn, addr = s.accept() # Guardem les variables "conn" i "addr" # # Implementa el ACCEPT. 
         # Hasta que no acepte la conexión, no hace el accept. Se queda "enganchado".
 	# Retorna una TUPLA --> CONNECTION (SOCKET) Y ADDRESS (IP y PUERTO).
-	if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
-		print("Connected by: %s" % addr) # Indica quién está conectado.
+#	if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
+	print("Connected by:", addr) # Indica quién está conectado.
 	llistaPeers.append(addr) # Lo registra en la LISTA de conexiones
   # En la lista vacía, cada HOST que se conecte al SERVIDOR, lo REGISTRA. Hace un APPEND. Lo añade al final de la LISTA (OBJETO).
 	while True: # Se realiza un BUCLE INFINITO para estar ESCUCHANDO el SERVIDOR.	
   		data = conn.recv(1024) # El servidor está recibiendo DATOS del CLIENTE. (Está recibiendo porque el CLIENTE le manda el COMANDO.)
+#  		data = str(str, 'UTF-8') # NO WORK
+#  		dataString = ''.join(map(chr, data)) # CONVERTIR BYTES A STRING
   		if args.debug:
-  			print ("Comanda: %s" % data)
+  			print ("Comanda:", data.decode("utf-8"))
   		if not data:
   			print("No s'ha rebut una comanda, adeu")
   			conn.close() # Tanca la connexió
   			break # Cuando el otro me ha penjado el teléfono cierra. Si ya no hay más datos a recibir por parte del CLIENTE, salta del programa.
+  		data = data.decode("utf-8")
   		if data == 'processos':
   			data = "ps ax"
-  		elif data == 'ports':
-  			data = "netstat -puta"
-  		elif data == 'whoareyou':
-  			data = "uname -a"
-  		else:
-  			data = "uname -a"		
+#  		elif data == 'ports':
+#  			data = "netstat -puta"
+#  		elif data == 'whoareyou':
+#  			data = "uname -a"
+#  		else:
+#  			data = "uname -a"		
   		pipeData = Popen(data, shell=True, stdout=PIPE, stderr=PIPE) # Se crea un TUBO (pipeData) donde enviará "data" por la SALIDA ESTÁNDAR (1) = PIPE y la SALIDA de ERROR también por el PIPE
   		for line in pipeData.stdout: # Se recorre cada LÍNEA de la SALIDA ESTÁNDAR (1)
+#  			lineString = ''.join(map(chr, line))
   			if args.debug: # Args.debug = Debug --> Depura e Imprime en el servidor el resultado si no hay errores
-  				print("Enviant: %s" % line) # Printa cada línea.
-	  			conn.sendall(line) # Envía la línea # Se asegura de vacíar el bufer, envía todo.
+  				# lineString = ''.join(map(chr, line))
+  				print("Enviant:", line.decode("utf-8")) # Printa cada línea.
+  			conn.sendall(line) # Envía la línea # Se asegura de vacíar el bufer, envía todo.
   		for line in pipeData.stderr:# Pipe de ERROR
+  			#lineString = ''.join(map(chr, line))
   			if args.debug:
-  				print("Enviant error: %s" % line)
-  				conn.sendall(line) # Envía la línea
+  				print("Enviant error:", line.decode("utf-8"))
+  			conn.sendall(line) # Envía la línea
   		conn.sendall(FI)
 	conn.close()
 s.close()
