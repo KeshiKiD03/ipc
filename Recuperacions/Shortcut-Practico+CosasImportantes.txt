@@ -14,6 +14,10 @@ Python Cheats#
 
 4. Identificar bien lo que pide.
 
+5. DEBUG EN VARIOS SITIOS - QUIÉN ESTÁ CONECTADO - NO DATA - EL COMANDO QUE HA HECHO - LO QUE SE ENVÍA AL CLIENTE - SALIDA DE ERROR
+
+6.
+
 ########################################################################################
 
 UBICACIÓN 	-	NOMBRE ARCHIVO 	-	RECURSO PYTHON
