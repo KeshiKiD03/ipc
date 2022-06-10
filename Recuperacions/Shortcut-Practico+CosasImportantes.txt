@@ -34,3 +34,8 @@ KeshiKiD03/IPC		-  25PSServer.py	-	FileName (LOGS)
 			
 			
 						-	La2 tiene FILENAME 	
+
+
+KeshiKiD03/IPC		26-telnet.client	-	if == EXIT
+
+KeshiKiD03/IPC		26-telnet.client	-	FI
